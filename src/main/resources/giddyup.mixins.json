@@ -3,7 +3,8 @@
 	"package": "net.superkat.giddyup.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ExampleMixin"
+		"AbstractHorseEntityMixin",
+		"HorseEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
