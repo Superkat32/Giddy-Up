@@ -9,9 +9,9 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.HorseColor;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.superkat.giddyup.GiddyUpMain;
 import org.spongepowered.asm.mixin.Mixin;
 
 import java.util.UUID;
@@ -60,10 +60,15 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
             if(this.isOnGround() && ticksRidden % 2 == 0) {
                 int amount = this.random.nextBetween(1, 4);
                 for(int smokeAmount = amount; smokeAmount >= 1; smokeAmount--) {
-    //                this.getWorld().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() + this.random.nextFloat() / 10 * (this.random.nextBoolean() ? 1 : -1), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.random.nextFloat() / 10 * (this.random.nextBoolean() ? 1 : -1), 0.0, 0.015, 0.0);
-                    this.getWorld().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ(), 0.0, 0.015, 0.0);
+                    //The particle's "velocity" isn't actually the velocity, it is used to determine other numbers
+                    //The velX number is used to determine the dust particle's scale
+                    //The velY number is used to determine the dust particle's age, which in turn is used to determine how quickly the particle should shrink
+                    if(dashing) {
+                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ(), this.random.nextFloat() * 2, 80, 0.0);
+                    } else {
+                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ(), this.random.nextFloat(), 40, 0.0);
+                    }
                 }
-                LOGGER.info("Dust particle spawned");
             }
         }
     }

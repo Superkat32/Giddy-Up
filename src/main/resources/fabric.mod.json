@@ -17,6 +17,9 @@
 	"entrypoints": {
 		"main": [
           "net.superkat.giddyup.GiddyUpMain"
+		],
+		"client": [
+			"net.superkat.giddyup.GiddyUpClient"
 		]
 	},
 	"mixins": [
