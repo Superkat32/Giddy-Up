@@ -9,6 +9,7 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.HorseColor;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,34 +26,17 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     public boolean dashing = false;
     public int dashCooldown = 0;
     public int dashDuration = 0;
+    public int ticksRidden = 0;
 
     protected HorseEntityMixin(EntityType<? extends AbstractHorseEntity> entityType, World world) {
         super(entityType, world);
     }
 
-//    @Override
-//    protected void jump(float strength, Vec3d movementInput) {
-//        double d = this.getJumpStrength() * (double)strength * (double)this.getJumpVelocityMultiplier();
-//        double e = d + (double)this.getJumpBoostVelocityModifier();
-//        Vec3d vec3d = this.getVelocity();
-//        this.setVelocity(vec3d.x, e, vec3d.z);
-//        this.setInAir(true);
-//        this.velocityDirty = true;
-//        if (movementInput.z > 0.0) {
-//            float f = MathHelper.sin(this.getYaw() * 0.017453292F);
-//            float g = MathHelper.cos(this.getYaw() * 0.017453292F);
-//            this.setVelocity(this.getVelocity().add((double)(-0.4F * f * strength), 0.0, (double)(0.4F * g * strength)));
-//        }
-//        if(getFirstPassenger().isSprinting()) {
-//            double f = this.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH) * (double)this.getJumpVelocityMultiplier() + (double)this.getJumpBoostVelocityModifier();
-//            this.addVelocity(this.getRotationVector().multiply(1.0, 0.0, 1.0).normalize().multiply((double)(22.2222F * strength) * this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * (double)this.getVelocityMultiplier()).add(0.0, (double)(1.4285F * strength) * f, 0.0));
-//            GiddyUpMain.LOGGER.info("is sprinting!");
-//        }
-//    }
-
     @Override
     protected void tickControlled(PlayerEntity controllingPlayer, Vec3d movementInput) {
         super.tickControlled(controllingPlayer, movementInput);
+        ticksRidden++;
+        //dashing
         if(dashCooldown > 0) {
             --this.dashCooldown;
             --this.dashDuration;
@@ -64,10 +48,23 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         }
         if(controllingPlayer.isSprinting() && !dashing && dashCooldown == 0) {
             this.dashing = true;
-            dashCooldown = 175;
-            dashDuration = 35;
+            dashCooldown = 175; //115?
+            dashDuration = 35; //45 to make up for dash fade in/out?
             removeDashBoost();
             addDashBoost();
+        }
+
+        double velX = Math.abs(this.getVelocity().getX());
+        double velZ = Math.abs(this.getVelocity().getZ());
+        if(velX > 0.15 || velZ > 0.15) {
+            if(this.isOnGround() && ticksRidden % 2 == 0) {
+                int amount = this.random.nextBetween(1, 4);
+                for(int smokeAmount = amount; smokeAmount >= 1; smokeAmount--) {
+    //                this.getWorld().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() + this.random.nextFloat() / 10 * (this.random.nextBoolean() ? 1 : -1), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.random.nextFloat() / 10 * (this.random.nextBoolean() ? 1 : -1), 0.0, 0.015, 0.0);
+                    this.getWorld().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ(), 0.0, 0.015, 0.0);
+                }
+                LOGGER.info("Dust particle spawned");
+            }
         }
     }
 
@@ -89,13 +86,10 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         }
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        if(this.dashing) {
-//            addDashBoost();
-        }
-    }
+//    @Override
+//    public void tick() {
+//        super.tick();
+//    }
 
     @Override
     public boolean canSprintAsVehicle() {
