@@ -9,10 +9,13 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.HorseColor;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.superkat.giddyup.GiddyUpClient;
 import net.superkat.giddyup.GiddyUpMain;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.UUID;
 
@@ -21,12 +24,14 @@ import static net.superkat.giddyup.GiddyUpMain.LOGGER;
 @Mixin(HorseEntity.class)
 public abstract class HorseEntityMixin extends AbstractHorseEntity implements VariantHolder<HorseColor> {
 
+    @Shadow protected abstract SoundEvent getAmbientSound();
+
     //Literally just the soul speed's id, except wit the last number replaced
     private static final UUID HORSE_DASH_ID = UUID.fromString("87f46a96-686f-4796-b035-22e16ee9e039");
+    public int ticksRidden = 0;
     public boolean dashing = false;
     public int dashCooldown = 0;
     public int dashDuration = 0;
-    public int ticksRidden = 0;
 
     protected HorseEntityMixin(EntityType<? extends AbstractHorseEntity> entityType, World world) {
         super(entityType, world);
@@ -46,14 +51,16 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
                 dashing = false;
             }
         }
-        if(controllingPlayer.isSprinting() && !dashing && dashCooldown == 0) {
+
+        if(GiddyUpClient.keyBinding.isPressed() && !dashing && dashCooldown == 0) {
             this.dashing = true;
-            dashCooldown = 175; //115?
-            dashDuration = 35; //45 to make up for dash fade in/out?
+            dashCooldown = 115;
+            dashDuration = 35;
             removeDashBoost();
             addDashBoost();
         }
 
+        //dust particles
         double velX = Math.abs(this.getVelocity().getX());
         double velZ = Math.abs(this.getVelocity().getZ());
         if(velX > 0.15 || velZ > 0.15) {
@@ -79,7 +86,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
             return;
         }
 
-        speed.addTemporaryModifier(new EntityAttributeModifier(HORSE_DASH_ID, "Horse dash speed boost", 0.37, EntityAttributeModifier.Operation.ADDITION));
+        speed.addTemporaryModifier(new EntityAttributeModifier(HORSE_DASH_ID, "Horse dash speed boost", 0.15, EntityAttributeModifier.Operation.ADDITION));
     }
 
     public void removeDashBoost() {

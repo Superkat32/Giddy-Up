@@ -16,7 +16,7 @@ public class DustParticle extends SpriteBillboardParticle {
         this.scale = (float) velX;
         this.maxAge = (int) velY;
         this.velocityX = 0;
-        this.velocityY = 0.1;
+        this.velocityY = 0.07;
         this.velocityZ = 0;
         this.x = x;
         this.y = y;
