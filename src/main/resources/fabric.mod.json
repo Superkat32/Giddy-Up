@@ -3,15 +3,14 @@
 	"id": "giddyup",
 	"version": "${version}",
 	"name": "Giddy Up",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Time to give your horses an overhaul!",
 	"authors": [
-		"Me!"
+		"Superkat32"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/Superkat32/Giddy-Up"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/giddyup/icon.png",
 	"environment": "*",
 	"entrypoints": {
