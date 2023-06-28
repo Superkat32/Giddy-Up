@@ -23,8 +23,7 @@ import static net.superkat.giddyup.GiddyUpMain.LOGGER;
 
 @Mixin(HorseEntity.class)
 public abstract class HorseEntityMixin extends AbstractHorseEntity implements VariantHolder<HorseColor> {
-
-    @Shadow protected abstract SoundEvent getAmbientSound();
+    @Shadow protected abstract SoundEvent getAngrySound();
 
     //Literally just the soul speed's id, except wit the last number replaced
     private static final UUID HORSE_DASH_ID = UUID.fromString("87f46a96-686f-4796-b035-22e16ee9e039");
@@ -58,6 +57,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
             dashDuration = 35;
             removeDashBoost();
             addDashBoost();
+            this.playSound(this.getAngrySound(), this.getSoundVolume(), this.getSoundPitch());
         }
 
         //dust particles
@@ -103,9 +103,9 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
 //        super.tick();
 //    }
 
-    @Override
-    public boolean canSprintAsVehicle() {
-        return true;
-    }
+//    @Override
+//    public boolean canSprintAsVehicle() {
+//        return true;
+//    }
 
 }

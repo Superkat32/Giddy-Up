@@ -17,7 +17,7 @@ public class GiddyUpClient implements ClientModInitializer {
         keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "giddyup.key.dash",
                 InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_LEFT_SHIFT,
+                GLFW.GLFW_KEY_H,
                 "giddyup.category.keybinds"
         ));
 

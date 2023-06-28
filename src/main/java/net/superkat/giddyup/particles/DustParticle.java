@@ -36,6 +36,7 @@ public class DustParticle extends SpriteBillboardParticle {
         } else {
             if(this.maxAge == 80) {
                 this.scale *= 0.92;
+                this.velocityY = 0.04;
             } else {
                 this.scale *= 0.85;
             }
