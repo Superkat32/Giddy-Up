@@ -35,13 +35,15 @@ public class DashRenderer {
             int totalWidth = maxDashes * 24 + (maxDashes - 1) * 24;
             int startX = (width - totalWidth) / 2;
 
+
+            RenderSystem.enableBlend();
             for(int i = 0; i < maxDashes; i++) {
                 x = startX + (24 + 24) * i;
 //                int currentDash = dashesRemaining;
 
+                context.setShaderColor(1f, 1f, 1f,1f);
                 context.drawTexture(isDashReady(i) ? dash_ready : dash_used, x, y, 0.0f, 0.0f, 24, 24, 24, 24);
                 if(!isDashReady(i) && i == dashesRemaining) {
-                    RenderSystem.enableBlend();
 //                    RenderSystem.enableBlend();
 //                    RenderSystem.disableDepthTest();
 //                    RenderSystem.enableCull();
@@ -56,6 +58,7 @@ public class DashRenderer {
 //                renderUsedDash(context, i, x, y);
 //                LOGGER.info(String.valueOf(i));
             }
+
 //            x = 179;
 //            context.drawTexture(isDashOneReady ? dash_ready : dash_used, x, y, 0.0f, 0.0f, 24, 24, 24, 24);
 //            x = 227;

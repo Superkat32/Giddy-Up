@@ -96,15 +96,16 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         }
         if(dashRecharge > 0) {
             --dashRecharge;
-            DashRenderer.iconAlpha = 0.2f - (0.8f * (float) dashRecharge / dashRechargeTime);
             if(dashRecharge == 0) {
                 if(dashesRemaining == maxDashes) {
                     return;
                 }
-                DashRenderer.iconAlpha = 1.0f;
                 dashesRemaining++;
-                updateDashHud();
                 dashRecharge = 115;
+                DashRenderer.iconAlpha = 0f;
+                updateDashHud();
+            } else if(dashRecharge > 3) {
+                DashRenderer.iconAlpha = 0.2f - (0.8f * (float) dashRecharge / dashRechargeTime);
             }
         }
 
