@@ -9,28 +9,27 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.HorseColor;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.superkat.giddyup.DashRenderer;
 import net.superkat.giddyup.GiddyUpClient;
 import net.superkat.giddyup.GiddyUpMain;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.UUID;
 
-import static net.superkat.giddyup.GiddyUpMain.LOGGER;
-
 @Mixin(HorseEntity.class)
 public abstract class HorseEntityMixin extends AbstractHorseEntity implements VariantHolder<HorseColor> {
-    @Shadow protected abstract SoundEvent getAngrySound();
 
     //Literally just the soul speed's id, except wit the last number replaced
     private static final UUID HORSE_DASH_ID = UUID.fromString("87f46a96-686f-4796-b035-22e16ee9e039");
     public int ticksRidden = 0;
     public boolean dashing = false;
     public int dashCooldown = 0;
+    public int dashRecharge = 0;
     public int dashDuration = 0;
+    public int dashesRemaining = 3;
+    public int maxDashes = 3;
 
     protected HorseEntityMixin(EntityType<? extends AbstractHorseEntity> entityType, World world) {
         super(entityType, world);
@@ -40,20 +39,40 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     protected void tickControlled(PlayerEntity controllingPlayer, Vec3d movementInput) {
         super.tickControlled(controllingPlayer, movementInput);
         ticksRidden++;
+//        LOGGER.info(String.valueOf(dashesRemaining));
         //dashing
+        if(ticksRidden == 1) {
+            updateDashHud();
+        }
         if(dashCooldown > 0) {
-            --this.dashCooldown;
-            --this.dashDuration;
-            LOGGER.info(String.valueOf(dashCooldown));
+            --dashCooldown;
+            --dashDuration;
+//            LOGGER.info(String.valueOf(dashCooldown));
             if(dashDuration == 0) {
                 removeDashBoost();
                 dashing = false;
+                DashRenderer.setDashing(false);
+            }
+        }
+        if(dashRecharge > 0) {
+            --dashRecharge;
+            if(dashRecharge == 0) {
+                if(dashesRemaining == maxDashes) {
+                    return;
+                }
+                dashesRemaining++;
+                updateDashHud();
+                dashRecharge = 115;
             }
         }
 
-        if(GiddyUpClient.keyBinding.isPressed() && !dashing && dashCooldown == 0) {
+        if(GiddyUpClient.keyBinding.isPressed() && !dashing && dashCooldown == 0 && dashesRemaining > 0) {
             this.dashing = true;
-            dashCooldown = 115;
+            dashesRemaining--;
+            DashRenderer.setDashing(true);
+            updateDashHud();
+            dashCooldown = 50;
+            dashRecharge = 115;
             dashDuration = 35;
             removeDashBoost();
             addDashBoost();
@@ -80,6 +99,28 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         }
     }
 
+    public void updateDashHud() {
+        switch (dashesRemaining) {
+            case 3 -> {
+                DashRenderer.isDashThreeReady = true;
+                DashRenderer.isDashTwoReady = true;
+                DashRenderer.isDashOneReady = true;
+            } case 2 -> {
+                DashRenderer.isDashThreeReady = false;
+                DashRenderer.isDashTwoReady = true;
+                DashRenderer.isDashOneReady = true;
+            } case 1 -> {
+                DashRenderer.isDashThreeReady = false;
+                DashRenderer.isDashTwoReady = false;
+                DashRenderer.isDashOneReady = true;
+            } case 0 -> {
+                DashRenderer.isDashThreeReady = false;
+                DashRenderer.isDashTwoReady = false;
+                DashRenderer.isDashOneReady = false;
+            }
+        }
+    }
+
     public void addDashBoost() {
         EntityAttributeInstance speed = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
         if(speed == null) {
@@ -98,10 +139,15 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         }
     }
 
-//    @Override
-//    public void tick() {
-//        super.tick();
-//    }
+    @Override
+    public void tick() {
+        super.tick();
+        if(this.getControllingPassenger() == null) {
+            ticksRidden = 0;
+        }
+
+        DashRenderer.setShouldRender(this.isTame() && this.isSaddled());
+    }
 
 //    @Override
 //    public boolean canSprintAsVehicle() {
