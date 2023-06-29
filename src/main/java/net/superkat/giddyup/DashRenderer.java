@@ -23,7 +23,7 @@ public class DashRenderer {
         int height = client.getWindow().getScaledHeight();
         int x = 0;
         int y = 175;
-        if(client.player.hasVehicle() && client.player.getVehicle() instanceof HorseEntity && shouldRender) {
+        if(client.player.hasVehicle() && client.player.getVehicle() instanceof HorseEntity && ((HorseEntity) client.player.getVehicle()).isTame() && shouldRender) {
             x = 179;
             context.drawTexture(isDashOneReady ? dash_ready : dash_used, x, y, 0.0f, 0.0f, 24, 24, 24, 24);
             x = 227;

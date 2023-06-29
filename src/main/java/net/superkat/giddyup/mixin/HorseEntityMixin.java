@@ -41,6 +41,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         ticksRidden++;
 //        LOGGER.info(String.valueOf(dashesRemaining));
         //dashing
+        if(controllingPlayer != null) DashRenderer.setShouldRender(true);
         if(ticksRidden == 1) {
             updateDashHud();
         }
@@ -145,8 +146,6 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         if(this.getControllingPassenger() == null) {
             ticksRidden = 0;
         }
-
-        DashRenderer.setShouldRender(this.isTame() && this.isSaddled());
     }
 
 //    @Override
