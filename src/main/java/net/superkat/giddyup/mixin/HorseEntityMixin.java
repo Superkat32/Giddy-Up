@@ -84,30 +84,6 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         if(ticksRidden == 4) {
             updateDashHud();
         }
-        if(dashCooldown > 0) {
-            --dashCooldown;
-            --dashDuration;
-//            LOGGER.info(String.valueOf(dashCooldown));
-            if(dashDuration == 0) {
-                removeDashBoost();
-                dashing = false;
-                DashRenderer.setDashing(false);
-            }
-        }
-        if(dashRecharge > 0) {
-            --dashRecharge;
-            if(dashRecharge == 0) {
-                if(dashesRemaining == maxDashes) {
-                    return;
-                }
-                dashesRemaining++;
-                dashRecharge = 115;
-                DashRenderer.iconAlpha = 0f;
-                updateDashHud();
-            } else if(dashRecharge > 3) {
-                DashRenderer.iconAlpha = 0.2f - (0.8f * (float) dashRecharge / dashRechargeTime);
-            }
-        }
 
         if(GiddyUpClient.keyBinding.isPressed() && !dashing && dashCooldown == 0 && dashesRemaining > 0) {
             this.dashing = true;
@@ -218,6 +194,37 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         if(this.getControllingPassenger() == null) {
             ticksRidden = 0;
         }
+
+        if(dashRecharge > 0) {
+            --dashRecharge;
+            if(dashRecharge == 0) {
+                if(dashesRemaining == maxDashes) {
+                    return;
+                }
+                dashesRemaining++;
+                dashRecharge = 115;
+                if(this.getControllingPassenger() !=  null) {
+                    DashRenderer.iconAlpha = 0f;
+                    updateDashHud();
+                }
+            } else if(dashRecharge > 3 && this.getControllingPassenger() != null) {
+                DashRenderer.iconAlpha = 0.2f - (0.8f * (float) dashRecharge / dashRechargeTime);
+            }
+        }
+
+        if(dashCooldown > 0) {
+            --dashCooldown;
+            --dashDuration;
+//            LOGGER.info(String.valueOf(dashCooldown));
+            if(dashDuration == 0) {
+                removeDashBoost();
+                dashing = false;
+                if(this.getControllingPassenger() != null) {
+                    DashRenderer.setDashing(false);
+                }
+            }
+        }
+
     }
 
 //    @Override
