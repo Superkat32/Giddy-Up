@@ -8,6 +8,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.HorseColor;
 import net.minecraft.entity.passive.HorseEntity;
+import net.minecraft.entity.passive.HorseMarking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -15,11 +16,16 @@ import net.superkat.giddyup.DashRenderer;
 import net.superkat.giddyup.GiddyUpClient;
 import net.superkat.giddyup.GiddyUpMain;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.UUID;
 
+import static net.superkat.giddyup.GiddyUpMain.LOGGER;
+
 @Mixin(HorseEntity.class)
 public abstract class HorseEntityMixin extends AbstractHorseEntity implements VariantHolder<HorseColor> {
+
+    @Shadow public abstract HorseMarking getMarking();
 
     //Literally just the soul speed's id, except wit the last number replaced
     private static final UUID HORSE_DASH_ID = UUID.fromString("87f46a96-686f-4796-b035-22e16ee9e039");
@@ -28,8 +34,8 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     public int dashCooldown = 0;
     public int dashRecharge = 0;
     public int dashDuration = 0;
-    public int dashesRemaining = 3;
-    public int maxDashes = 3;
+    public int maxDashes = 1;
+    public int dashesRemaining = maxDashes;
 
     protected HorseEntityMixin(EntityType<? extends AbstractHorseEntity> entityType, World world) {
         super(entityType, world);
@@ -38,11 +44,47 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     @Override
     protected void tickControlled(PlayerEntity controllingPlayer, Vec3d movementInput) {
         super.tickControlled(controllingPlayer, movementInput);
+        if(this.getVariant() == HorseColor.WHITE) {
+            maxDashes = 5;
+        } else if (this.getVariant() == HorseColor.CREAMY) {
+            maxDashes = 4;
+        } else if (this.getVariant() == HorseColor.CHESTNUT) {
+            maxDashes = 4;
+        } else if (this.getVariant() == HorseColor.BROWN) {
+            maxDashes = 3;
+        } else if (this.getVariant() == HorseColor.BLACK) {
+            maxDashes = 3;
+        } else if (this.getVariant() == HorseColor.GRAY) {
+            maxDashes = 2;
+        } else if (this.getVariant() == HorseColor.DARK_BROWN) {
+            maxDashes = 1;
+        }
+
+        if(maxDashes != 5) {
+            if(this.getMarking() == HorseMarking.WHITE) {
+                if(maxDashes + 2 > 5) {
+                    maxDashes = 5;
+                } else {
+                    maxDashes += 2;
+                }
+            } else if(this.getMarking() == HorseMarking.WHITE_FIELD) {
+                maxDashes++;
+            } else if(this.getMarking() == HorseMarking.BLACK_DOTS) {
+                maxDashes++;
+            } else if(this.getMarking() == HorseMarking.NONE) {
+                maxDashes++;
+            }
+        }
+//        if(this.getVariant() == HorseColor.WHITE) {
+//            maxDashes = 5;
+//        } else {
+//            maxDashes = 3;
+//        }
         ticksRidden++;
 //        LOGGER.info(String.valueOf(dashesRemaining));
         //dashing
         if(controllingPlayer != null) DashRenderer.setShouldRender(true);
-        if(ticksRidden == 1) {
+        if(ticksRidden == 4) {
             updateDashHud();
         }
         if(dashCooldown > 0) {
@@ -101,20 +143,50 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     }
 
     public void updateDashHud() {
+        DashRenderer.maxDashes = maxDashes;
+        DashRenderer.dashesRemaining = dashesRemaining;
         switch (dashesRemaining) {
-            case 3 -> {
+            case 5 -> {
+                DashRenderer.isDashFiveReady = true;
+                DashRenderer.isDashFourReady = true;
+                DashRenderer.isDashThreeReady = true;
+                DashRenderer.isDashTwoReady = true;
+                DashRenderer.isDashOneReady = true;
+            } case 4 -> {
+                DashRenderer.isDashFiveReady = false;
+                DashRenderer.isDashFourReady = true;
+                DashRenderer.isDashThreeReady = true;
+                DashRenderer.isDashTwoReady = true;
+                DashRenderer.isDashOneReady = true;
+            } case 3 -> {
+                DashRenderer.isDashFiveReady = false;
+                DashRenderer.isDashFourReady = false;
                 DashRenderer.isDashThreeReady = true;
                 DashRenderer.isDashTwoReady = true;
                 DashRenderer.isDashOneReady = true;
             } case 2 -> {
+                DashRenderer.isDashFiveReady = false;
+                DashRenderer.isDashFourReady = false;
                 DashRenderer.isDashThreeReady = false;
                 DashRenderer.isDashTwoReady = true;
                 DashRenderer.isDashOneReady = true;
             } case 1 -> {
+                DashRenderer.isDashFiveReady = false;
+                DashRenderer.isDashFourReady = false;
                 DashRenderer.isDashThreeReady = false;
                 DashRenderer.isDashTwoReady = false;
                 DashRenderer.isDashOneReady = true;
             } case 0 -> {
+                DashRenderer.isDashFiveReady = false;
+                DashRenderer.isDashFourReady = false;
+                DashRenderer.isDashThreeReady = false;
+                DashRenderer.isDashTwoReady = false;
+                DashRenderer.isDashOneReady = false;
+            }
+            default -> {
+                LOGGER.warn("DASHES REMAINING UNKNOWN: " + dashesRemaining);
+                DashRenderer.isDashFiveReady = false;
+                DashRenderer.isDashFourReady = false;
                 DashRenderer.isDashThreeReady = false;
                 DashRenderer.isDashTwoReady = false;
                 DashRenderer.isDashOneReady = false;

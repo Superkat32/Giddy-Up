@@ -14,7 +14,7 @@ public class InGameHudMixin {
 
     @Inject(method = "render", at = @At("RETURN"))
     public void renderDash(DrawContext context, float tickDelta, CallbackInfo ci) {
-        dashRenderer.renderTest(context);
+        dashRenderer.renderDashElement(context);
     }
 
 }
