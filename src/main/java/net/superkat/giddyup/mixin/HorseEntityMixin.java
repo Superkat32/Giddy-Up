@@ -32,6 +32,8 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     public int ticksRidden = 0;
     public boolean dashing = false;
     public int dashCooldown = 0;
+    public int dashRechargeTime = 115;
+    public int ticksUntilRechargeReset;
     public int dashRecharge = 0;
     public int dashDuration = 0;
     public int maxDashes = 1;
@@ -75,13 +77,8 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
                 maxDashes++;
             }
         }
-//        if(this.getVariant() == HorseColor.WHITE) {
-//            maxDashes = 5;
-//        } else {
-//            maxDashes = 3;
-//        }
         ticksRidden++;
-//        LOGGER.info(String.valueOf(dashesRemaining));
+
         //dashing
         if(controllingPlayer != null) DashRenderer.setShouldRender(true);
         if(ticksRidden == 4) {
@@ -99,10 +96,12 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         }
         if(dashRecharge > 0) {
             --dashRecharge;
+            DashRenderer.iconAlpha = 0.2f - (0.8f * (float) dashRecharge / dashRechargeTime);
             if(dashRecharge == 0) {
                 if(dashesRemaining == maxDashes) {
                     return;
                 }
+                DashRenderer.iconAlpha = 1.0f;
                 dashesRemaining++;
                 updateDashHud();
                 dashRecharge = 115;
@@ -115,7 +114,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
             DashRenderer.setDashing(true);
             updateDashHud();
             dashCooldown = 50;
-            dashRecharge = 115;
+            dashRecharge = dashRechargeTime;
             dashDuration = 35;
             removeDashBoost();
             addDashBoost();
