@@ -33,11 +33,11 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     public boolean dashing = false;
     public int dashCooldown = 0;
     public int dashRechargeTime = 115;
-    public int ticksUntilRechargeReset;
     public int dashRecharge = 0;
     public int dashDuration = 0;
     public int maxDashes = 1;
     public int dashesRemaining = maxDashes;
+    public boolean hasDashedBefore = false;
 
     protected HorseEntityMixin(EntityType<? extends AbstractHorseEntity> entityType, World world) {
         super(entityType, world);
@@ -83,6 +83,10 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         if(controllingPlayer != null) DashRenderer.setShouldRender(true);
         if(ticksRidden == 4) {
             updateDashHud();
+            if(!hasDashedBefore) {
+                hasDashedBefore = true;
+                dashRecharge = dashRechargeTime;
+            }
         }
 
         if(GiddyUpClient.keyBinding.isPressed() && !dashing && dashCooldown == 0 && dashesRemaining > 0) {
@@ -109,9 +113,9 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
                     //The velX number is used to determine the dust particle's scale
                     //The velY number is used to determine the dust particle's age, which in turn is used to determine how quickly the particle should shrink
                     if(dashing) {
-                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ(), this.random.nextFloat() * 2, 80, 0.0);
+                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat() * 2, 80, 0.0);
                     } else {
-                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ(), this.random.nextFloat(), 40, 0.0);
+                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat(), 40, 0.0);
                     }
                 }
             }
@@ -208,7 +212,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
                     updateDashHud();
                 }
             } else if(dashRecharge > 3 && this.getControllingPassenger() != null) {
-                DashRenderer.iconAlpha = 0.2f - (0.8f * (float) dashRecharge / dashRechargeTime);
+                DashRenderer.iconAlpha = 0.3f - (0.8f * (float) dashRecharge / dashRechargeTime);
             }
         }
 
