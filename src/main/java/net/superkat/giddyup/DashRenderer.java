@@ -22,6 +22,7 @@ public class DashRenderer {
     public static boolean isDashFiveReady;
     public static float iconAlpha;
     private static MinecraftClient client;
+    private int textureSize = 20;
     public DashRenderer() {
         client = MinecraftClient.getInstance();
     }
@@ -29,31 +30,37 @@ public class DashRenderer {
     public void renderDashElement(DrawContext context) {
         int width = client.getWindow().getScaledWidth();
         int height = client.getWindow().getScaledHeight();
+        textureSize = 20;
         int x = 0;
-        int y = 175;
+//        int y = 187;
+        int y = 160;
         if(client.player.hasVehicle() && client.player.getVehicle() instanceof HorseEntity && ((HorseEntity) client.player.getVehicle()).isTame() && ((HorseEntity) client.player.getVehicle()).isSaddled() && maxDashes != 0 && shouldRender) {
-            int totalWidth = maxDashes * 24 + (maxDashes - 1) * 24;
+            int totalWidth = maxDashes * textureSize + (maxDashes - 1) * textureSize;
             int startX = (width - totalWidth) / 2;
 
 
-            RenderSystem.enableBlend();
+//            RenderSystem.enableColorLogicOp();
             for(int i = 0; i < maxDashes; i++) {
-                x = startX + (24 + 24) * i;
+                x = startX + (textureSize + textureSize) * i;
 //                int currentDash = dashesRemaining;
+                RenderSystem.enableBlend();
+                RenderSystem.defaultBlendFunc();
+                RenderSystem.disableDepthTest();
+                RenderSystem.depthMask(false);
 
                 context.setShaderColor(1f, 1f, 1f,1f);
-                context.drawTexture(isDashReady(i) ? dash_ready : dash_used, x, y, 0.0f, 0.0f, 24, 24, 24, 24);
+                context.drawTexture(isDashReady(i) ? dash_ready : dash_used, x, y, 0.0f, 0.0f, textureSize, textureSize, textureSize, textureSize);
                 if(!isDashReady(i) && i == dashesRemaining) {
 //                    RenderSystem.enableBlend();
 //                    RenderSystem.disableDepthTest();
 //                    RenderSystem.enableCull();
                     context.setShaderColor(1f, 1f, 1f, iconAlpha);
                     LOGGER.info(String.valueOf(dashesRemaining));
-                    context.drawTexture(dash_ready, x, y, 0.0f, 0.0f, 24, 24, 24, 24);
-                } else {
-                    context.setShaderColor(1, 1, 1, 1f);
+                    context.drawTexture(dash_ready, x, y, 0.0f, 0.0f, textureSize, textureSize, textureSize, textureSize);
                 }
 //                RenderSystem.disableBlend();
+                RenderSystem.depthMask(true);
+                RenderSystem.enableDepthTest();
                 context.setShaderColor(1f, 1f, 1f,1f);
 //                renderUsedDash(context, i, x, y);
 //                LOGGER.info(String.valueOf(i));
