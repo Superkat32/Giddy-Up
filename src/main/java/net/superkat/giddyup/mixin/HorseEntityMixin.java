@@ -20,9 +20,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.UUID;
 
-import static net.superkat.giddyup.GiddyUpMain.LOGGER;
-
-@Mixin(HorseEntity.class)
+@Mixin(value = HorseEntity.class, priority = 490)
 public abstract class HorseEntityMixin extends AbstractHorseEntity implements VariantHolder<HorseColor> {
 
     @Shadow public abstract HorseMarking getMarking();
@@ -89,7 +87,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
             }
         }
 
-        if(GiddyUpClient.keyBinding.isPressed() && !dashing && dashCooldown == 0 && dashesRemaining > 0) {
+        if(GiddyUpClient.DASH.isPressed() && !dashing && dashCooldown == 0 && dashesRemaining > 0) {
             this.dashing = true;
             dashesRemaining--;
             DashRenderer.setDashing(true);
@@ -123,6 +121,8 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     }
 
     public void updateDashHud() {
+        //THIS IS AWFUL I KNOW
+        //IT WILL BE FIXED LATER(PROBABLY) DON'T WORRY
         DashRenderer.maxDashes = maxDashes;
         DashRenderer.dashesRemaining = dashesRemaining;
         switch (dashesRemaining) {
@@ -164,7 +164,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
                 DashRenderer.isDashOneReady = false;
             }
             default -> {
-                LOGGER.warn("DASHES REMAINING UNKNOWN: " + dashesRemaining);
+                GiddyUpMain.LOGGER.warn("DASHES REMAINING UNKNOWN: " + dashesRemaining);
                 DashRenderer.isDashFiveReady = false;
                 DashRenderer.isDashFourReady = false;
                 DashRenderer.isDashThreeReady = false;
@@ -228,7 +228,6 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
                 }
             }
         }
-
     }
 
 //    @Override

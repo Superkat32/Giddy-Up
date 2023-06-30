@@ -68,10 +68,6 @@ public class DashRenderer {
         }
     }
 
-    public void renderUsedDash(DrawContext context, int i, int x, int y) {
-//        context.drawTexture(isDashReady(i) ? dash_ready : dash_used, x, y, 0.0f, 0.0f, 24, 24, 24, 24);
-    }
-
     public static void setDashing(boolean dashing) {
         DashRenderer.dashing = dashing;
     }
