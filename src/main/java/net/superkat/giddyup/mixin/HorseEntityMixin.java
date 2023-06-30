@@ -12,8 +12,8 @@ import net.minecraft.entity.passive.HorseMarking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.superkat.giddyup.DashHandler;
 import net.superkat.giddyup.DashRenderer;
-import net.superkat.giddyup.GiddyUpClient;
 import net.superkat.giddyup.GiddyUpMain;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,61 +44,61 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     @Override
     protected void tickControlled(PlayerEntity controllingPlayer, Vec3d movementInput) {
         super.tickControlled(controllingPlayer, movementInput);
-        if(this.getVariant() == HorseColor.WHITE) {
-            maxDashes = 5;
-        } else if (this.getVariant() == HorseColor.CREAMY) {
-            maxDashes = 4;
-        } else if (this.getVariant() == HorseColor.CHESTNUT) {
-            maxDashes = 4;
-        } else if (this.getVariant() == HorseColor.BROWN) {
-            maxDashes = 3;
-        } else if (this.getVariant() == HorseColor.BLACK) {
-            maxDashes = 3;
-        } else if (this.getVariant() == HorseColor.GRAY) {
-            maxDashes = 2;
-        } else if (this.getVariant() == HorseColor.DARK_BROWN) {
-            maxDashes = 1;
-        }
-
-        if(maxDashes != 5) {
-            if(this.getMarking() == HorseMarking.WHITE) {
-                if(maxDashes + 2 > 5) {
-                    maxDashes = 5;
-                } else {
-                    maxDashes += 2;
-                }
-            } else if(this.getMarking() == HorseMarking.WHITE_FIELD) {
-                maxDashes++;
-            } else if(this.getMarking() == HorseMarking.BLACK_DOTS) {
-                maxDashes++;
-            } else if(this.getMarking() == HorseMarking.NONE) {
-                maxDashes++;
-            }
-        }
+//        if(this.getVariant() == HorseColor.WHITE) {
+//            maxDashes = 5;
+//        } else if (this.getVariant() == HorseColor.CREAMY) {
+//            maxDashes = 4;
+//        } else if (this.getVariant() == HorseColor.CHESTNUT) {
+//            maxDashes = 4;
+//        } else if (this.getVariant() == HorseColor.BROWN) {
+//            maxDashes = 3;
+//        } else if (this.getVariant() == HorseColor.BLACK) {
+//            maxDashes = 3;
+//        } else if (this.getVariant() == HorseColor.GRAY) {
+//            maxDashes = 2;
+//        } else if (this.getVariant() == HorseColor.DARK_BROWN) {
+//            maxDashes = 1;
+//        }
+//
+//        if(maxDashes != 5) {
+//            if(this.getMarking() == HorseMarking.WHITE) {
+//                if(maxDashes + 2 > 5) {
+//                    maxDashes = 5;
+//                } else {
+//                    maxDashes += 2;
+//                }
+//            } else if(this.getMarking() == HorseMarking.WHITE_FIELD) {
+//                maxDashes++;
+//            } else if(this.getMarking() == HorseMarking.BLACK_DOTS) {
+//                maxDashes++;
+//            } else if(this.getMarking() == HorseMarking.NONE) {
+//                maxDashes++;
+//            }
+//        }
         ticksRidden++;
 
         //dashing
-        if(controllingPlayer != null) DashRenderer.setShouldRender(true);
-        if(ticksRidden == 4) {
-            updateDashHud();
-            if(!hasDashedBefore) {
-                hasDashedBefore = true;
-                dashRecharge = dashRechargeTime;
-            }
-        }
-
-        if(GiddyUpClient.DASH.isPressed() && !dashing && dashCooldown == 0 && dashesRemaining > 0) {
-            this.dashing = true;
-            dashesRemaining--;
-            DashRenderer.setDashing(true);
-            updateDashHud();
-            dashCooldown = 50;
-            dashRecharge = dashRechargeTime;
-            dashDuration = 35;
-            removeDashBoost();
-            addDashBoost();
-            this.playSound(this.getAngrySound(), this.getSoundVolume(), this.getSoundPitch());
-        }
+//        if(controllingPlayer != null) DashRenderer.setShouldRender(true);
+//        if(ticksRidden == 4) {
+//            updateDashHud();
+//            if(!hasDashedBefore) {
+//                hasDashedBefore = true;
+//                dashRecharge = dashRechargeTime;
+//            }
+//        }
+//
+//        if(GiddyUpClient.DASH.isPressed() && !dashing && dashCooldown == 0 && dashesRemaining > 0) {
+//            this.dashing = true;
+//            dashesRemaining--;
+//            DashRenderer.setDashing(true);
+//            updateDashHud();
+//            dashCooldown = 50;
+//            dashRecharge = dashRechargeTime;
+//            dashDuration = 35;
+//            removeDashBoost();
+//            addDashBoost();
+//            this.playSound(this.getAngrySound(), this.getSoundVolume(), this.getSoundPitch());
+//        }
 
         //dust particles
         double velX = Math.abs(this.getVelocity().getX());
@@ -174,6 +174,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         }
     }
 
+    //Remove later
     public void addDashBoost() {
         EntityAttributeInstance speed = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
         if(speed == null) {
@@ -183,6 +184,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         speed.addTemporaryModifier(new EntityAttributeModifier(HORSE_DASH_ID, "Horse dash speed boost", 0.15, EntityAttributeModifier.Operation.ADDITION));
     }
 
+    //Remove later
     public void removeDashBoost() {
         EntityAttributeInstance speed = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
         if(speed != null) {
@@ -195,39 +197,47 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     @Override
     public void tick() {
         super.tick();
+//        DashHandler.tick(horse);
         if(this.getControllingPassenger() == null) {
             ticksRidden = 0;
         }
-
-        if(dashRecharge > 0) {
-            --dashRecharge;
-            if(dashRecharge == 0) {
-                if(dashesRemaining == maxDashes) {
-                    return;
-                }
-                dashesRemaining++;
-                dashRecharge = 115;
-                if(this.getControllingPassenger() !=  null) {
-                    DashRenderer.iconAlpha = 0f;
-                    updateDashHud();
-                }
-            } else if(dashRecharge > 3 && this.getControllingPassenger() != null) {
-                DashRenderer.iconAlpha = 0.3f - (0.8f * (float) dashRecharge / dashRechargeTime);
-            }
+        var horse = (HorseEntity) (Object)this;
+        DashHandler.tick(horse);
+        if(horse == null) {
+            GiddyUpMain.LOGGER.warn("bruh");
         }
 
-        if(dashCooldown > 0) {
-            --dashCooldown;
-            --dashDuration;
-//            LOGGER.info(String.valueOf(dashCooldown));
-            if(dashDuration == 0) {
-                removeDashBoost();
-                dashing = false;
-                if(this.getControllingPassenger() != null) {
-                    DashRenderer.setDashing(false);
-                }
-            }
-        }
+        //remove later
+//        if(dashRecharge > 0) {
+//            --dashRecharge;
+//            if(dashRecharge == 0) {
+//                if(dashesRemaining == maxDashes) {
+//                    return;
+//                }
+//                dashesRemaining++;
+//                dashRecharge = 115;
+//                if(this.getControllingPassenger() !=  null) {
+//                    DashRenderer.iconAlpha = 0f;
+//                    updateDashHud();
+//                }
+//            } else if(dashRecharge > 3 && this.getControllingPassenger() != null) {
+//                DashRenderer.iconAlpha = 0.3f - (0.8f * (float) dashRecharge / dashRechargeTime);
+//            }
+//        }
+//
+//        //Remove later
+//        if(dashCooldown > 0) {
+//            --dashCooldown;
+//            --dashDuration;
+////            LOGGER.info(String.valueOf(dashCooldown));
+//            if(dashDuration == 0) {
+//                removeDashBoost();
+//                dashing = false;
+//                if(this.getControllingPassenger() != null) {
+//                    DashRenderer.setDashing(false);
+//                }
+//            }
+//        }
     }
 
 //    @Override

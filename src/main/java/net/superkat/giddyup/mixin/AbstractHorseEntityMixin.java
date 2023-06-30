@@ -25,6 +25,4 @@ public class AbstractHorseEntityMixin {
 		cir.setReturnValue(returnJump);
 //		LOGGER.info(String.valueOf(cir.getReturnValue()));
 	}
-
-
 }
