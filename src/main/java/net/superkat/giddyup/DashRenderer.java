@@ -6,8 +6,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.util.Identifier;
 
-import static net.superkat.giddyup.GiddyUpMain.LOGGER;
-
 public class DashRenderer {
     public Identifier dash_ready = new Identifier(GiddyUpMain.MOD_ID, "textures/dash/dash.png");
     public Identifier dash_used = new Identifier(GiddyUpMain.MOD_ID, "textures/dash/dash_used.png");
@@ -54,8 +52,9 @@ public class DashRenderer {
 //                    RenderSystem.enableBlend();
 //                    RenderSystem.disableDepthTest();
 //                    RenderSystem.enableCull();
+//                    LOGGER.info(String.valueOf(iconAlpha));
                     context.setShaderColor(1f, 1f, 1f, iconAlpha);
-                    LOGGER.info(String.valueOf(dashesRemaining));
+//                    LOGGER.info(String.valueOf(i));
                     context.drawTexture(dash_ready, x, y, 0.0f, 0.0f, textureSize, textureSize, textureSize, textureSize);
                 }
 //                RenderSystem.disableBlend();

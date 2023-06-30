@@ -27,10 +27,10 @@ public class GiddyUpClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(GiddyUpMain.DUST, DustParticle.Factory::new);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(client.getNetworkHandler() != null) {
-                if(DASH.wasPressed()) {
+                if(DASH.isPressed()) {
                     GiddyUpMain.LOGGER.info("hotkey pressed");
 //                    ClientPlayNetworking.send(GiddyUpMain.KEYBINDING_PACKET_ID, PacketByteBufs.empty());
-                    if(client.player.getVehicle() instanceof HorseEntity) {
+                    if(client.player.getVehicle() instanceof HorseEntity && DashHandler.canContinue()) {
 //                        DashHandler.test((HorseEntity) client.player.getVehicle());
                         tryDash((HorseEntity) client.player.getVehicle());
                         GiddyUpMain.LOGGER.info("attempting dash");
@@ -42,9 +42,11 @@ public class GiddyUpClient implements ClientModInitializer {
 
     private void tryDash(HorseEntity horse) {
         GiddyUpMain.LOGGER.info("tryDash: 1");
-        if(DashHandler.canDash() && horse.isTame() && horse.isSaddled()) {
+        if(DashHandler.canContinue() && horse.isTame() && horse.isSaddled()) {
             DashHandler.startDash(horse);
             GiddyUpMain.LOGGER.info("tryDash: 2");
+        } else {
+            return;
         }
     }
 }

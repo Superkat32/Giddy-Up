@@ -20,6 +20,8 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.UUID;
 
+import static net.superkat.giddyup.GiddyUpMain.LOGGER;
+
 @Mixin(value = HorseEntity.class, priority = 490)
 public abstract class HorseEntityMixin extends AbstractHorseEntity implements VariantHolder<HorseColor> {
 
@@ -28,13 +30,15 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     //Literally just the soul speed's id, except wit the last number replaced
     private static final UUID HORSE_DASH_ID = UUID.fromString("87f46a96-686f-4796-b035-22e16ee9e039");
     public int ticksRidden = 0;
+    public boolean continueNoRiderActions = false;
+    public int maxDashes = -1;
+    public int dashesRemaining;
+    public boolean canDash = false;
     public boolean dashing = false;
-    public int dashCooldown = 0;
     public int dashRechargeTime = 115;
-    public int dashRecharge = 0;
-    public int dashDuration = 0;
-    public int maxDashes = 1;
-    public int dashesRemaining = maxDashes;
+    public int dashTicks = 0;
+    public int cooldownTicks = 0;
+    public int rechargeTicks = 0;
     public boolean hasDashedBefore = false;
 
     protected HorseEntityMixin(EntityType<? extends AbstractHorseEntity> entityType, World world) {
@@ -76,29 +80,34 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
 //            }
 //        }
         ticksRidden++;
+        updateDashHandler(false);
 
         //dashing
-//        if(controllingPlayer != null) DashRenderer.setShouldRender(true);
-//        if(ticksRidden == 4) {
-//            updateDashHud();
-//            if(!hasDashedBefore) {
-//                hasDashedBefore = true;
-//                dashRecharge = dashRechargeTime;
-//            }
-//        }
-//
-//        if(GiddyUpClient.DASH.isPressed() && !dashing && dashCooldown == 0 && dashesRemaining > 0) {
-//            this.dashing = true;
-//            dashesRemaining--;
+        if (controllingPlayer != null) {
+            DashHandler.renderHUD();
+        };
+        if(ticksRidden == 1) {
+            updateDashHud();
+            if(!hasDashedBefore) {
+                hasDashedBefore = true;
+                rechargeTicks = dashRechargeTime;
+            }
+        }
+
+        if(canDash && !dashing && cooldownTicks == 0 && dashesRemaining > 0) {
+            canDash = false;
+            DashHandler.canDash = false;
+            this.dashing = true;
+            dashesRemaining--;
 //            DashRenderer.setDashing(true);
-//            updateDashHud();
-//            dashCooldown = 50;
-//            dashRecharge = dashRechargeTime;
-//            dashDuration = 35;
-//            removeDashBoost();
-//            addDashBoost();
-//            this.playSound(this.getAngrySound(), this.getSoundVolume(), this.getSoundPitch());
-//        }
+            updateDashHud();
+            cooldownTicks = 50;
+            rechargeTicks = dashRechargeTime;
+            dashTicks = 35;
+            removeDashBoost();
+            addDashBoost();
+            this.playSound(this.getAngrySound(), this.getSoundVolume(), this.getSoundPitch());
+        }
 
         //dust particles
         double velX = Math.abs(this.getVelocity().getX());
@@ -120,57 +129,41 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         }
     }
 
+    public void updateDashHandler(boolean noRider) {
+        if(noRider) {
+            DashHandler.currentMaxDashes = -1;
+            DashHandler.currentRemainingDashes = -1;
+            DashHandler.currentDashTicks = -1;
+            DashHandler.currentCooldownTicks = -1;
+            DashHandler.currentRechargeTicks = -1;
+            continueNoRiderActions = false;
+        } else {
+            DashHandler.currentMaxDashes = maxDashes;
+            DashHandler.currentRemainingDashes = dashesRemaining;
+            DashHandler.currentDashTicks = dashTicks;
+            DashHandler.currentCooldownTicks = cooldownTicks;
+            DashHandler.currentRechargeTicks = rechargeTicks;
+            continueNoRiderActions = true;
+        }
+    }
+
     public void updateDashHud() {
-        //THIS IS AWFUL I KNOW
-        //IT WILL BE FIXED LATER(PROBABLY) DON'T WORRY
         DashRenderer.maxDashes = maxDashes;
         DashRenderer.dashesRemaining = dashesRemaining;
-        switch (dashesRemaining) {
-            case 5 -> {
-                DashRenderer.isDashFiveReady = true;
-                DashRenderer.isDashFourReady = true;
-                DashRenderer.isDashThreeReady = true;
-                DashRenderer.isDashTwoReady = true;
-                DashRenderer.isDashOneReady = true;
-            } case 4 -> {
-                DashRenderer.isDashFiveReady = false;
-                DashRenderer.isDashFourReady = true;
-                DashRenderer.isDashThreeReady = true;
-                DashRenderer.isDashTwoReady = true;
-                DashRenderer.isDashOneReady = true;
-            } case 3 -> {
-                DashRenderer.isDashFiveReady = false;
-                DashRenderer.isDashFourReady = false;
-                DashRenderer.isDashThreeReady = true;
-                DashRenderer.isDashTwoReady = true;
-                DashRenderer.isDashOneReady = true;
-            } case 2 -> {
-                DashRenderer.isDashFiveReady = false;
-                DashRenderer.isDashFourReady = false;
-                DashRenderer.isDashThreeReady = false;
-                DashRenderer.isDashTwoReady = true;
-                DashRenderer.isDashOneReady = true;
-            } case 1 -> {
-                DashRenderer.isDashFiveReady = false;
-                DashRenderer.isDashFourReady = false;
-                DashRenderer.isDashThreeReady = false;
-                DashRenderer.isDashTwoReady = false;
-                DashRenderer.isDashOneReady = true;
-            } case 0 -> {
-                DashRenderer.isDashFiveReady = false;
-                DashRenderer.isDashFourReady = false;
-                DashRenderer.isDashThreeReady = false;
-                DashRenderer.isDashTwoReady = false;
-                DashRenderer.isDashOneReady = false;
-            }
-            default -> {
-                GiddyUpMain.LOGGER.warn("DASHES REMAINING UNKNOWN: " + dashesRemaining);
-                DashRenderer.isDashFiveReady = false;
-                DashRenderer.isDashFourReady = false;
-                DashRenderer.isDashThreeReady = false;
-                DashRenderer.isDashTwoReady = false;
-                DashRenderer.isDashOneReady = false;
-            }
+
+        DashRenderer.isDashFiveReady = dashesRemaining >= 5;
+        DashRenderer.isDashFourReady = dashesRemaining >= 4;
+        DashRenderer.isDashThreeReady = dashesRemaining >= 3;
+        DashRenderer.isDashTwoReady = dashesRemaining >= 2;
+        DashRenderer.isDashOneReady = dashesRemaining >= 1;
+
+        if (dashesRemaining < 0 || dashesRemaining > 5) {
+            LOGGER.warn("DASHES REMAINING UNKNOWN: " + dashesRemaining);
+            DashRenderer.isDashFiveReady = false;
+            DashRenderer.isDashFourReady = false;
+            DashRenderer.isDashThreeReady = false;
+            DashRenderer.isDashTwoReady = false;
+            DashRenderer.isDashOneReady = false;
         }
     }
 
@@ -194,50 +187,66 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         }
     }
 
+    public HorseEntity getSelf() {
+        var horse = (HorseEntity) (Object)this;
+        if(horse == null) {
+            LOGGER.warn("HorseEntityMixin is null!");
+        }
+        return horse;
+    }
+
     @Override
     public void tick() {
         super.tick();
-//        DashHandler.tick(horse);
-        if(this.getControllingPassenger() == null) {
+
+        //Activates upon being loaded/spawned
+        if(this.getControllingPassenger() == null && continueNoRiderActions) {
             ticksRidden = 0;
+            updateDashHandler(true);
         }
-        var horse = (HorseEntity) (Object)this;
-        DashHandler.tick(horse);
-        if(horse == null) {
-            GiddyUpMain.LOGGER.warn("bruh");
+        if(maxDashes == -1) {
+            maxDashes = DashHandler.determineMaxDashes(getSelf(), this.getVariant(), this.getMarking());
+            dashesRemaining = maxDashes;
+            updateDashHandler(true);
         }
 
-        //remove later
-//        if(dashRecharge > 0) {
-//            --dashRecharge;
-//            if(dashRecharge == 0) {
-//                if(dashesRemaining == maxDashes) {
-//                    return;
-//                }
-//                dashesRemaining++;
-//                dashRecharge = 115;
-//                if(this.getControllingPassenger() !=  null) {
+        //Checks if the keybind has been pressed
+        canDash = DashHandler.canDash;
+        DashHandler.dashing = dashing;
+
+
+        //Recharges the dash
+        if(rechargeTicks > 0) {
+            --rechargeTicks;
+            if(rechargeTicks == 0) {
+                if(dashesRemaining == maxDashes) {
+                    return;
+                }
+                dashesRemaining++;
+                rechargeTicks = 115;
+                if(this.getControllingPassenger() !=  null) {
 //                    DashRenderer.iconAlpha = 0f;
-//                    updateDashHud();
-//                }
-//            } else if(dashRecharge > 3 && this.getControllingPassenger() != null) {
-//                DashRenderer.iconAlpha = 0.3f - (0.8f * (float) dashRecharge / dashRechargeTime);
+                    updateDashHud();
+                }
+            }
+//            else if(rechargeTicks > 3 && this.getControllingPassenger() != null) {
+//                DashRenderer.iconAlpha = 0.3f - (0.8f * (float) rechargeTicks / dashRechargeTime);
 //            }
-//        }
-//
-//        //Remove later
-//        if(dashCooldown > 0) {
-//            --dashCooldown;
-//            --dashDuration;
-////            LOGGER.info(String.valueOf(dashCooldown));
-//            if(dashDuration == 0) {
-//                removeDashBoost();
-//                dashing = false;
+        }
+
+        //Adds a brief cooldown before allowing another dash
+        if(cooldownTicks > 0) {
+            --cooldownTicks;
+            --dashTicks;
+//            LOGGER.info(String.valueOf(dashCooldown));
+            if(dashTicks == 0) {
+                removeDashBoost();
+                dashing = false;
 //                if(this.getControllingPassenger() != null) {
 //                    DashRenderer.setDashing(false);
 //                }
-//            }
-//        }
+            }
+        }
     }
 
 //    @Override
