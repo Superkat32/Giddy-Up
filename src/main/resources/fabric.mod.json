@@ -19,6 +19,9 @@
 		],
 		"client": [
 			"net.superkat.giddyup.GiddyUpClient"
+		],
+		"modmenu": [
+			"net.superkat.giddyup.compat.ModMenuIntegration"
 		]
 	},
 	"mixins": [

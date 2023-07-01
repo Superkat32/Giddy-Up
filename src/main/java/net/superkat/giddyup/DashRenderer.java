@@ -20,6 +20,7 @@ public class DashRenderer {
     public static boolean isDashFiveReady;
     public static float iconAlpha;
     public static int y = 0;
+    public static int x = 0;
     public static int easeOutTick = 0;
     private static MinecraftClient client;
     private int textureSize = 20;
@@ -31,7 +32,7 @@ public class DashRenderer {
         int width = client.getWindow().getScaledWidth();
         int height = client.getWindow().getScaledHeight();
         textureSize = 20;
-        int x = 0;
+//        int x = 0;
 //        int y = 0;
 //        easeOutTick = 0;
 //        int y = 187;
