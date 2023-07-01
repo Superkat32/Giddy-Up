@@ -19,6 +19,8 @@ public class DashRenderer {
     public static boolean isDashFourReady;
     public static boolean isDashFiveReady;
     public static float iconAlpha;
+    public static int y = 0;
+    public static int easeOutTick = 0;
     private static MinecraftClient client;
     private int textureSize = 20;
     public DashRenderer() {
@@ -30,8 +32,21 @@ public class DashRenderer {
         int height = client.getWindow().getScaledHeight();
         textureSize = 20;
         int x = 0;
+//        int y = 0;
+//        easeOutTick = 0;
 //        int y = 187;
-        int y = 160;
+        if(easeOutTick < 40 && client.player.getVehicle() instanceof HorseEntity) {
+            float t = (float) easeOutTick / 40;
+            float easedValue = textureSize * 2 + height + (160 - height - textureSize * 2) * (1 - (1 - t) * (1 - t));
+            y = Math.round(easedValue);
+            easeOutTick++;
+//          0.35f - (0.8f * (float) currentRechargeTicks / 115)
+        }
+        if(!(client.player.getVehicle() instanceof HorseEntity)) {
+            y = 0;
+            easeOutTick= 0;
+        }
+//        int y = 160;
         if(client.player.hasVehicle() && client.player.getVehicle() instanceof HorseEntity && ((HorseEntity) client.player.getVehicle()).isTame() && ((HorseEntity) client.player.getVehicle()).isSaddled() && maxDashes != 0 && shouldRender) {
             int totalWidth = maxDashes * textureSize + (maxDashes - 1) * textureSize;
             int startX = (width - totalWidth) / 2;
