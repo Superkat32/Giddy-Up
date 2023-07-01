@@ -15,13 +15,7 @@ public class DashHandler {
     public static int currentCooldownTicks;
     public static int currentRechargeTicks;
 
-    public static void test(HorseEntity horse) {
-        LOGGER.info("yay");
-        if(horse != null) {
-            LOGGER.info("YAY");
-        }
-    }
-
+    //Called by client and handler after hotkey and before dash
     public static boolean canContinue() {
         if(!dashing && currentCooldownTicks == 0 && currentRemainingDashes > 0) {
 //        if(!dashing) {
@@ -80,7 +74,7 @@ public class DashHandler {
 //            }
 //        }
 //    }
-
+    //Called by HorseEntityMixin
     public static void renderHUD() {
         DashRenderer.shouldRender = true;
 //        LOGGER.info(String.valueOf(currentRechargeTicks));
@@ -127,38 +121,36 @@ public class DashHandler {
         int returnValue = 0;
 //        LOGGER.info("maxDashes1");
         if(color == HorseColor.WHITE) {
-            returnValue = 5;
+            returnValue = 4;
         } else if (color == HorseColor.CREAMY) {
-            returnValue = 4;
+            returnValue = 3;
         } else if (color == HorseColor.CHESTNUT) {
-            returnValue = 4;
+            returnValue = 3;
         } else if (color == HorseColor.BROWN) {
-            returnValue = 3;
-        } else if (color == HorseColor.BLACK) {
-            returnValue = 3;
-        } else if (color == HorseColor.GRAY) {
             returnValue = 2;
+        } else if (color == HorseColor.BLACK) {
+            returnValue = 2;
+        } else if (color == HorseColor.GRAY) {
+            returnValue = 1;
         } else if (color == HorseColor.DARK_BROWN) {
             returnValue = 1;
         }
 
 //        LOGGER.info("maxDashes2");
-        if(returnValue != 5) {
-            if(marking == HorseMarking.WHITE) {
-                if(returnValue + 2 > 5) {
-                    returnValue = 5;
-                } else {
-                    returnValue += 2;
-                }
-            } else if(marking == HorseMarking.WHITE_FIELD) {
-                returnValue += 1;
-            } else if(marking == HorseMarking.BLACK_DOTS) {
-                returnValue += 1;
-            } else if(marking == HorseMarking.NONE) {
-                returnValue += 1;
+        if(marking == HorseMarking.WHITE) {
+            if(returnValue + 2 > 5) {
+                returnValue = 5;
+            } else {
+                returnValue += 2;
             }
+        } else if(marking == HorseMarking.WHITE_FIELD) {
+            returnValue += 1;
+        } else if(marking == HorseMarking.BLACK_DOTS) {
+            returnValue += 1;
+        } else if(marking == HorseMarking.NONE) {
+            returnValue += 1;
         }
-//        LOGGER.info("maxDashes3");
+        //        LOGGER.info("maxDashes3");
         return returnValue;
     }
 
