@@ -1,4 +1,38 @@
 {
   "giddyup.category.keybinds": "Giddy Up",
-  "giddyup.key.dash": "Horse Dash"
+  "giddyup.key.dash": "Horse Dash",
+
+  "giddyup.icon.exit": "Done",
+  "giddyup.icon.reset": "Reset",
+
+  "giddyup.config.warning": "§c§lWARNING: §rThis option will only affect you in single player. If you wish to change it on multiplayer, you will have to manually edit the config on in the server files. (\"./config/giddyup.json\")",
+  "giddyup.config.restart": "§cRequires a world relog if on singleplayer, or a server restart if on multiplayer.",
+
+  "giddyup.category.server": "Server/Single Player",
+
+  "giddyup.buffs.group": "Buffs",
+  "giddyup.buffs.group.tooltip": "Stat buff related options",
+  "giddyup.speedbuff": "Speed Buff",
+  "giddyup.speedbuff.tooltip": "Increase horse's speed by 1.25x.",
+  "giddyup.jumpbuff": "Jump Buff",
+  "giddyup.jumpbuff.tooltip": "Increase a horse's jump by 1.15x.",
+
+  "giddyup.category.dash": "Dashing",
+
+  "giddyup.icon.group": "Dash HUD(client)",
+  "giddyup.icon.group.tooltip": "Dash HUD element related options",
+  "giddyup.moveicons": "Move HUD element",
+  "giddyup.moveicons.tooltip": "Move the dash HUD element placement. Requires you to be logged into a world.",
+  "giddyup.iconx": "Icon X",
+  "giddyup.iconx.tooltip": "The x coordinate placement",
+  "giddyup.icony": "Icon Y",
+  "giddyup.icony.tooltip": "The y coordinate placement",
+  "giddyup.size": "Icon Size",
+  "giddyup.size.tooltip": "The size of the HUD element",
+  "giddyup.spacing": "Icon Spacing",
+  "giddyup.spacing.tooltip": "The spacing of each dash between one another",
+  "giddyup.easein": "HUD Element Ease In",
+  "giddyup.easein.tooltip": "Should the HUD element ease into place upon riding a horse?",
+  "giddyup.opacity": "Opacity Recharge",
+  "giddyup.opacity.tooltip": "Should the opacity of the icon slowly increase when recharging?"
 }

@@ -40,6 +40,9 @@ public class GiddyUpConfig {
                     .name(Text.translatable("giddyup.speedbuff"))
                     .description(OptionDescription.createBuilder()
                             .text(Text.translatable("giddyup.speedbuff.tooltip"))
+                            .text(Text.of(""))
+                            .text(Text.translatable("giddyup.config.warning"))
+                            .text(Text.translatable("giddyup.config.restart"))
                             .build())
                     .binding(
                             defaults.horseSpeedBuff,
@@ -53,6 +56,9 @@ public class GiddyUpConfig {
                     .name(Text.translatable("giddyup.jumpbuff"))
                     .description(OptionDescription.createBuilder()
                             .text(Text.translatable("giddyup.jumpbuff.tooltip"))
+                            .text(Text.of(""))
+                            .text(Text.translatable("giddyup.config.warning"))
+                            .text(Text.translatable("giddyup.config.restart"))
                             .build())
                     .binding(
                             defaults.horseJumpBuff,
@@ -78,9 +84,9 @@ public class GiddyUpConfig {
                             .build());
 
             var moveIcons = ButtonOption.createBuilder()
-                    .name(Text.literal("button name test"))
+                    .name(Text.translatable("giddyup.moveicons"))
                     .description(OptionDescription.createBuilder()
-                            .text(Text.literal("yay"))
+                            .text(Text.translatable("giddyup.moveicons.tooltip"))
                             .build())
                     .action((screen, opt) -> MinecraftClient.getInstance().setScreen(new DashElementScreen(screen)))
                     .available(MinecraftClient.getInstance().isInSingleplayer())
