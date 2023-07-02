@@ -26,7 +26,8 @@ public class DashRenderer {
     public static int x = 0;
     public static int easeOutTick = 0;
     private static MinecraftClient client;
-    private int textureSize = 20;
+    private int textureSize = 0;
+    private int textureSpacing = 0;
     public DashRenderer() {
         client = MinecraftClient.getInstance();
     }
@@ -36,7 +37,8 @@ public class DashRenderer {
         int height = client.getWindow().getScaledHeight();
 //        GiddyUpMain.LOGGER.info("width: " + width);
 //        GiddyUpMain.LOGGER.info("height: " + height);
-        textureSize = 20;
+        textureSize = INSTANCE.getConfig().textureSize;
+        textureSpacing = INSTANCE.getConfig().textureSpacing;
 //        int x = 0;
 //        int y = 0;
 //        easeOutTick = 0;
@@ -54,7 +56,7 @@ public class DashRenderer {
             int finishX = 0;
             int startY = 0;
 
-            if(easeOutTick < 40) {
+            if(easeOutTick < 40 && INSTANCE.getConfig().easeIn) {
                 float t = (float) easeOutTick / 40;
                 float easedValue = textureSize * 2 + height + (INSTANCE.getConfig().iconY - height - textureSize * 2) * (1 - (1 - t) * (1 - t));
                 startY = Math.round(easedValue);
@@ -67,7 +69,7 @@ public class DashRenderer {
 
 //            RenderSystem.enableColorLogicOp();
             for(int i = 0; i < maxDashes; i++) {
-                finishX = startX + (textureSize + textureSize) * i;
+                finishX = startX + (textureSize + textureSpacing) * i;
                 x = finishX + INSTANCE.getConfig().iconX;
                 y = startY;
 //                int currentDash = dashesRemaining;
@@ -83,9 +85,11 @@ public class DashRenderer {
 //                    RenderSystem.disableDepthTest();
 //                    RenderSystem.enableCull();
 //                    LOGGER.info(String.valueOf(iconAlpha));
-                    context.setShaderColor(1f, 1f, 1f, iconAlpha);
+                    if(INSTANCE.getConfig().opacityRecharge) {
+                        context.setShaderColor(1f, 1f, 1f, iconAlpha);
+                        context.drawTexture(dash_ready, x, y, 0.0f, 0.0f, textureSize, textureSize, textureSize, textureSize);
+                    }
 //                    LOGGER.info(String.valueOf(i));
-                    context.drawTexture(dash_ready, x, y, 0.0f, 0.0f, textureSize, textureSize, textureSize, textureSize);
                 }
 //                RenderSystem.disableBlend();
                 RenderSystem.depthMask(true);

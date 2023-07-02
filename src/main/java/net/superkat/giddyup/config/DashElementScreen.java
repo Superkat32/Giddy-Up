@@ -29,7 +29,7 @@ public class DashElementScreen extends Screen {
 
         addDrawableChild(
                 ButtonWidget.builder(Text.translatable("giddyup.icon.exit"), button -> {
-                    this.close();
+                            this.close();
 //                    this.client.setScreenAndRender(lastScreen);
 //                    this.client.setScreen(lastScreen);
 //                    INSTANCE.getConfig().iconX = x;
@@ -38,10 +38,74 @@ public class DashElementScreen extends Screen {
 //                    INSTANCE.load();
 //                    this.client.setScreen(GiddyUpConfig.makeScreen(lastScreen));
 //                    INSTANCE.save();
-                })
-                .position(buttonCenterX, buttonCenterY - 35)
-                .size(buttonWidth, buttonHeight)
-                .build()
+                        })
+                        .position(buttonCenterX, buttonCenterY - 35)
+                        .size(buttonWidth, buttonHeight)
+                        .build()
+        );
+        addDrawableChild(
+                ButtonWidget.builder(Text.translatable("giddyup.icon.reset"), button -> {
+                            x = INSTANCE.getDefaults().iconX;
+                            y = INSTANCE.getDefaults().iconY;
+                            INSTANCE.getConfig().iconX = x;
+                            INSTANCE.getConfig().iconY = y;
+                        })
+                        .position(buttonCenterX, buttonCenterY + 10)
+                        .size(buttonWidth, buttonHeight)
+                        .build()
+        );
+        addDrawableChild(
+                ButtonWidget.builder(Text.literal("+"), button -> {
+                            x += 1;
+                            INSTANCE.getConfig().iconX = x;
+                        })
+                        .position((int) (buttonCenterX + buttonWidth / 1.5), buttonCenterY - 20)
+                        .size(buttonWidth / 3, buttonHeight)
+                        .build()
+        );
+        addDrawableChild(
+                ButtonWidget.builder(Text.literal("-"), button -> {
+                            x -= 1;
+                            INSTANCE.getConfig().iconX = x;
+                        })
+                        .position(buttonCenterX + buttonWidth / 3, buttonCenterY - 20)
+                        .size(buttonWidth / 3, buttonHeight)
+                        .build()
+        );
+        addDrawableChild(
+                ButtonWidget.builder(Text.literal("x:"), button -> {
+
+                        })
+                        .position((int) (buttonCenterX), buttonCenterY - 20)
+                        .size(buttonWidth / 3, buttonHeight)
+                        .build()
+        );
+
+        addDrawableChild(
+                ButtonWidget.builder(Text.literal("+"), button -> {
+                            y += 1;
+                            INSTANCE.getConfig().iconY = y;
+                        })
+                        .position((int) (buttonCenterX + buttonWidth / 1.5), buttonCenterY - 5)
+                        .size(buttonWidth / 3, buttonHeight)
+                        .build()
+        );
+        addDrawableChild(
+                ButtonWidget.builder(Text.literal("-"), button -> {
+                            y -= 1;
+                            INSTANCE.getConfig().iconY = y;
+                        })
+                        .position(buttonCenterX + buttonWidth / 3, buttonCenterY - 5)
+                        .size(buttonWidth / 3, buttonHeight)
+                        .build()
+        );
+        addDrawableChild(
+                ButtonWidget.builder(Text.literal("y:"), button -> {
+
+                        })
+                        .position((int) (buttonCenterX), buttonCenterY - 5)
+                        .size(buttonWidth / 3, buttonHeight)
+                        .build()
         );
     }
 

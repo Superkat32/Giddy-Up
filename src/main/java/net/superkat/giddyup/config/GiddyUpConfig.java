@@ -20,6 +20,10 @@ public class GiddyUpConfig {
     @ConfigEntry public boolean horseJumpBuff = true;
     @ConfigEntry public int iconX = 0;
     @ConfigEntry public int iconY = 160;
+    @ConfigEntry public int textureSize = 20;
+    @ConfigEntry public int textureSpacing = 20;
+    @ConfigEntry public boolean easeIn = true;
+    @ConfigEntry public boolean opacityRecharge = true;
 
     public static Screen makeScreen(Screen parent) {
         return YetAnotherConfigLib.create(INSTANCE, (defaults, config, builder) -> {
@@ -57,7 +61,7 @@ public class GiddyUpConfig {
                     )
                     .customController(booleanOption -> new BooleanController(booleanOption, true))
                     .build();
-//
+
 
 
             buffsGroup.option(speedBuff);
@@ -72,6 +76,15 @@ public class GiddyUpConfig {
                     .description(OptionDescription.createBuilder()
                             .text(Text.translatable("giddyup.icon.group.tooltip"))
                             .build());
+
+            var moveIcons = ButtonOption.createBuilder()
+                    .name(Text.literal("button name test"))
+                    .description(OptionDescription.createBuilder()
+                            .text(Text.literal("yay"))
+                            .build())
+                    .action((screen, opt) -> MinecraftClient.getInstance().setScreen(new DashElementScreen(screen)))
+                    .available(MinecraftClient.getInstance().isInSingleplayer())
+                    .build();
 
             var iconX = Option.<Integer>createBuilder()
                     .name(Text.translatable("giddyup.iconx"))
@@ -100,17 +113,68 @@ public class GiddyUpConfig {
                     .customController(opt -> new <Integer>IntegerSliderController(opt, -MinecraftClient.getInstance().getWindow().getScaledHeight(), MinecraftClient.getInstance().getWindow().getScaledHeight(), 1))
                     .build();
 
-            var button = ButtonOption.createBuilder()
-                    .name(Text.literal("button name test"))
+            var textureSize = Option.<Integer>createBuilder()
+                    .name(Text.translatable("giddyup.size"))
                     .description(OptionDescription.createBuilder()
-                            .text(Text.literal("yay"))
+                            .text(Text.translatable("giddyup.size.tooltip"))
                             .build())
-                    .action((screen, opt) -> MinecraftClient.getInstance().setScreen(new DashElementScreen(screen)))
+                    .binding(
+                            defaults.textureSize,
+                            () -> config.textureSize,
+                            val -> config.textureSize = val
+                    )
+                    .customController(opt -> new <Integer>IntegerSliderController(opt, 0, 64, 1))
                     .build();
 
+
+            var textureSpacing = Option.<Integer>createBuilder()
+                    .name(Text.translatable("giddyup.spacing"))
+                    .description(OptionDescription.createBuilder()
+                            .text(Text.translatable("giddyup.spacing.tooltip"))
+                            .build())
+                    .binding(
+                            defaults.textureSpacing,
+                            () -> config.textureSpacing,
+                            val -> config.textureSpacing = val
+                    )
+                    .customController(opt -> new <Integer>IntegerSliderController(opt, 0, 64, 1))
+                    .build();
+
+            var easeIn = Option.<Boolean>createBuilder()
+                    .name(Text.translatable("giddyup.easein"))
+                    .description(OptionDescription.createBuilder()
+                            .text(Text.translatable("giddyup.easein.tooltip"))
+                            .build())
+                    .binding(
+                            defaults.easeIn,
+                            () -> config.easeIn,
+                            val -> config.easeIn = val
+                    )
+                    .customController(booleanOption -> new BooleanController(booleanOption, true))
+                    .build();
+
+            var opacityRecharge = Option.<Boolean>createBuilder()
+                    .name(Text.translatable("giddyup.opacity"))
+                    .description(OptionDescription.createBuilder()
+                            .text(Text.translatable("giddyup.opacity.tooltip"))
+                            .build())
+                    .binding(
+                            defaults.opacityRecharge,
+                            () -> config.opacityRecharge,
+                            val -> config.opacityRecharge = val
+                    )
+                    .customController(booleanOption -> new BooleanController(booleanOption, true))
+                    .build();
+
+
+
+            iconGroup.option(moveIcons);
             iconGroup.option(iconX);
             iconGroup.option(iconY);
-            iconGroup.option(button);
+            iconGroup.option(textureSize);
+            iconGroup.option(textureSpacing);
+            iconGroup.option(easeIn);
+            iconGroup.option(opacityRecharge);
 
             dashCategory.group(iconGroup.build());
 
