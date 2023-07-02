@@ -5,6 +5,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.util.Identifier;
+import net.superkat.giddyup.config.DashElementScreen;
+
+import static net.superkat.giddyup.config.GiddyUpConfig.INSTANCE;
 
 public class DashRenderer {
     public Identifier dash_ready = new Identifier(GiddyUpMain.MOD_ID, "textures/dash/dash.png");
@@ -31,31 +34,42 @@ public class DashRenderer {
     public void renderDashElement(DrawContext context) {
         int width = client.getWindow().getScaledWidth();
         int height = client.getWindow().getScaledHeight();
+//        GiddyUpMain.LOGGER.info("width: " + width);
+//        GiddyUpMain.LOGGER.info("height: " + height);
         textureSize = 20;
 //        int x = 0;
 //        int y = 0;
 //        easeOutTick = 0;
 //        int y = 187;
-        if(easeOutTick < 40 && client.player.getVehicle() instanceof HorseEntity) {
-            float t = (float) easeOutTick / 40;
-            float easedValue = textureSize * 2 + height + (160 - height - textureSize * 2) * (1 - (1 - t) * (1 - t));
-            y = Math.round(easedValue);
-            easeOutTick++;
-//          0.35f - (0.8f * (float) currentRechargeTicks / 115)
-        }
         if(!(client.player.getVehicle() instanceof HorseEntity)) {
             y = 0;
             easeOutTick= 0;
+        } else if(client.currentScreen instanceof DashElementScreen) {
+            y = INSTANCE.getConfig().iconY;
         }
 //        int y = 160;
         if(client.player.hasVehicle() && client.player.getVehicle() instanceof HorseEntity && ((HorseEntity) client.player.getVehicle()).isTame() && ((HorseEntity) client.player.getVehicle()).isSaddled() && maxDashes != 0 && shouldRender) {
             int totalWidth = maxDashes * textureSize + (maxDashes - 1) * textureSize;
             int startX = (width - totalWidth) / 2;
+            int finishX = 0;
+            int startY = 0;
+
+            if(easeOutTick < 40) {
+                float t = (float) easeOutTick / 40;
+                float easedValue = textureSize * 2 + height + (INSTANCE.getConfig().iconY - height - textureSize * 2) * (1 - (1 - t) * (1 - t));
+                startY = Math.round(easedValue);
+                easeOutTick++;
+//          0.35f - (0.8f * (float) currentRechargeTicks / 115)
+            } else {
+                startY = INSTANCE.getConfig().iconY;
+            }
 
 
 //            RenderSystem.enableColorLogicOp();
             for(int i = 0; i < maxDashes; i++) {
-                x = startX + (textureSize + textureSize) * i;
+                finishX = startX + (textureSize + textureSize) * i;
+                x = finishX + INSTANCE.getConfig().iconX;
+                y = startY;
 //                int currentDash = dashesRemaining;
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
