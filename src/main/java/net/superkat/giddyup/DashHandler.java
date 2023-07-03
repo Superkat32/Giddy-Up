@@ -14,6 +14,18 @@ public class DashHandler {
     public static int currentDashTicks;
     public static int currentCooldownTicks;
     public static int currentRechargeTicks;
+    public static int whiteHorseMaxDash = 4;
+    public static int creamyHorseMaxDash = 3;
+    public static int chestnutHorseMaxDash = 3;
+    public static int brownHorseMaxDash = 2;
+    public static int blackHorseMaxDash = 2;
+    public static int grayHorseMaxDash = 1;
+    public static int darkbrownHorseMaxDash = 1;
+    public static int whiteHorseMarking = 2;
+    public static int whiteFieldHorseMarking = 1;
+    public static int blackDotsHorseMarking = 1;
+    public static int noneHorseMarking = 1;
+    public static int whiteDotsHorseMarking = 0;
 
     //Called by client and handler after hotkey and before dash
     public static boolean canContinue() {
@@ -121,36 +133,37 @@ public class DashHandler {
         int returnValue = 0;
 //        LOGGER.info("maxDashes1");
         if(color == HorseColor.WHITE) {
-            returnValue = 4;
+            returnValue = whiteHorseMaxDash;
         } else if (color == HorseColor.CREAMY) {
-            returnValue = 3;
+            returnValue = creamyHorseMaxDash;
         } else if (color == HorseColor.CHESTNUT) {
-            returnValue = 3;
+            returnValue = chestnutHorseMaxDash;
         } else if (color == HorseColor.BROWN) {
-            returnValue = 2;
+            returnValue = brownHorseMaxDash;
         } else if (color == HorseColor.BLACK) {
-            returnValue = 2;
+            returnValue = blackHorseMaxDash;
         } else if (color == HorseColor.GRAY) {
-            returnValue = 1;
+            returnValue = grayHorseMaxDash;
         } else if (color == HorseColor.DARK_BROWN) {
-            returnValue = 1;
+            returnValue = darkbrownHorseMaxDash;
         }
 
 //        LOGGER.info("maxDashes2");
         if(marking == HorseMarking.WHITE) {
-            if(returnValue + 2 > 5) {
-                returnValue = 5;
-            } else {
-                returnValue += 2;
-            }
+            returnValue += whiteHorseMarking;
         } else if(marking == HorseMarking.WHITE_FIELD) {
-            returnValue += 1;
+            returnValue += whiteFieldHorseMarking;
         } else if(marking == HorseMarking.BLACK_DOTS) {
-            returnValue += 1;
+            returnValue += blackDotsHorseMarking;
         } else if(marking == HorseMarking.NONE) {
-            returnValue += 1;
+            returnValue += noneHorseMarking;
+        } else if (marking == HorseMarking.WHITE_DOTS) {
+            returnValue += whiteDotsHorseMarking;
         }
         //        LOGGER.info("maxDashes3");
+        if(returnValue > 5) {
+            returnValue = 5;
+        }
         return returnValue;
     }
 

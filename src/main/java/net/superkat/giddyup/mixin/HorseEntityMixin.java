@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.UUID;
 
-import static net.superkat.giddyup.GiddyUpMain.LOGGER;
+import static net.superkat.giddyup.GiddyUpMain.*;
 
 @Mixin(value = HorseEntity.class, priority = 490)
 public abstract class HorseEntityMixin extends AbstractHorseEntity implements VariantHolder<HorseColor> {
@@ -41,13 +41,15 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     public int rechargeTicks = 0;
     public boolean hasDashedBefore = false;
 
-    protected HorseEntityMixin(EntityType<? extends AbstractHorseEntity> entityType, World world) {
+    public HorseEntityMixin(EntityType<? extends AbstractHorseEntity> entityType, World world) {
         super(entityType, world);
     }
 
     @Override
     protected void tickControlled(PlayerEntity controllingPlayer, Vec3d movementInput) {
         super.tickControlled(controllingPlayer, movementInput);
+//        this.world.getGameRules().getBoolean(TEST);
+
 //        if(this.getVariant() == HorseColor.WHITE) {
 //            maxDashes = 5;
 //        } else if (this.getVariant() == HorseColor.CREAMY) {
@@ -196,6 +198,24 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     }
 
     @Override
+    protected float getSaddledSpeed(PlayerEntity controllingPlayer) {
+        if(this.getWorld().getGameRules().getBoolean(HORSE_SPEED_BUFF)) {
+            return (float)this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 1.25f;
+        } else {
+            return (float)this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+        }
+    }
+
+    @Override
+    public double getJumpStrength() {
+        if(this.getWorld().getGameRules().getBoolean(HORSE_JUMP_BUFF)) {
+            return this.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH) * 5;
+        } else {
+            return this.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH);
+        }
+    }
+
+    @Override
     public void tick() {
         super.tick();
 
@@ -213,6 +233,17 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         //Checks if the keybind has been pressed
         canDash = DashHandler.canDash;
         DashHandler.dashing = dashing;
+
+        //Updates the max dashes
+        if(this.getControllingPassenger() != null) {
+            maxDashes = DashHandler.determineMaxDashes(getSelf(), this.getVariant(), this.getMarking());
+            DashRenderer.maxDashes = maxDashes;
+            if(dashesRemaining > maxDashes) {
+                dashesRemaining = maxDashes;
+            }
+        }
+
+        LOGGER.info("{} {}", this.getWorld().getGameRules().getBoolean(HORSE_JUMP_BUFF), this.getWorld().isClient());
 
 
         //Recharges the dash
