@@ -16,5 +16,6 @@ public class ModMenuIntegration implements ModMenuApi {
 //        return null;
 //        return parent -> screenBuilder.build(parent, );
         return parent -> new YaclScreenBuilder().build(parent, GiddyUpMain.config);
+//        return ConfigScreen::new;
     }
 }

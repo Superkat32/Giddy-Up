@@ -23,13 +23,14 @@ public class GiddyUpServerConfig extends Config {
                 .fileHeader("Giddy Up's config."));
     }
 
+
 //    @ConfigEntry(comment = "test")
 //    private boolean comment;
 
     @Override
     public Collection<ConfigContainer> getTransitives() {
         if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            return List.of(new ServerConfig.Dashing(), new ServerConfig.Buffs());
+            return List.of(new ServerConfig.Dashing(), new ServerConfig.Buffs(), new GiddyUpClientConfig.ClientDataTypes.DashingIconPlacementClient());
         }
         return List.of(new ServerConfig.Dashing(), new ServerConfig.Buffs());
     }
@@ -41,7 +42,6 @@ public class GiddyUpServerConfig extends Config {
         @ConfigEntries(includeAll = true)
         public static class Buffs implements ConfigGroup {
             @Getter
-            @ConfigEntry(comment = "Server only")
             @ConfigEntry.Checkbox
             private static boolean horseSpeedBuff = true;
 
@@ -59,16 +59,24 @@ public class GiddyUpServerConfig extends Config {
             @Getter
             @ConfigEntry.Checkbox
             private static boolean test = false;
+
+//            private static ButtonWidget button = ButtonWidget.builder(Text.translatable("giddyup.icon.reset"), button -> {
+//                        MinecraftClient.getInstance().setScreen(new DashElementScreen(MinecraftClient.getInstance().currentScreen));
+//                    })
+//                    .position(0, 0 + 10)
+//                    .size(60, 15)
+//                    .build();
 //            @ConfigEntry.Checkbox
 //            @Getter
 //            private boolean testBoolean;
+
 //
 //            @ConfigEntry.BoundedInteger(min = 0, max = 10)
 //            @ConfigEntry.Slider
 //            @ConfigEntry.IntegerSliderInterval(1)
 //            private int mySlider;
         }
-
-
     }
+//    @Getter
+//    private InputUtil.Key aKey = InputUtil.UNKNOWN_KEY;
 }

@@ -30,14 +30,6 @@ public class DashElementScreen extends Screen {
         addDrawableChild(
                 ButtonWidget.builder(Text.translatable("giddyup.icon.exit"), button -> {
                             this.close();
-//                    this.client.setScreenAndRender(lastScreen);
-//                    this.client.setScreen(lastScreen);
-//                    INSTANCE.getConfig().iconX = x;
-//                    INSTANCE.getConfig().iconY = y;
-//                    this.client.currentScreen = lastScreen;
-//                    INSTANCE.load();
-//                    this.client.setScreen(GiddyUpConfig.makeScreen(lastScreen));
-//                    INSTANCE.save();
                         })
                         .position(buttonCenterX, buttonCenterY - 35)
                         .size(buttonWidth, buttonHeight)
