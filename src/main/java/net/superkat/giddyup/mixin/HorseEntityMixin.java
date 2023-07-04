@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.UUID;
 
-import static net.superkat.giddyup.GiddyUpMain.*;
+import static net.superkat.giddyup.GiddyUpMain.LOGGER;
 
 @Mixin(value = HorseEntity.class, priority = 490)
 public abstract class HorseEntityMixin extends AbstractHorseEntity implements VariantHolder<HorseColor> {
@@ -197,23 +197,27 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         return horse;
     }
 
-    @Override
-    protected float getSaddledSpeed(PlayerEntity controllingPlayer) {
-        if(this.getWorld().getGameRules().getBoolean(HORSE_SPEED_BUFF)) {
-            return (float)this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 1.25f;
-        } else {
-            return (float)this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED);
-        }
-    }
+//    @Environment(EnvType.SERVER)
+//    @Override
+//    protected float getSaddledSpeed(PlayerEntity controllingPlayer) {
+//        if(this.getWorld().getGameRules().getBoolean(HORSE_SPEED_BUFF)) {
+//            return (float)this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 1.25f;
+//        } else {
+//            return (float)this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+//        }
+//    }
 
-    @Override
-    public double getJumpStrength() {
-        if(this.getWorld().getGameRules().getBoolean(HORSE_JUMP_BUFF)) {
-            return this.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH) * 5;
-        } else {
-            return this.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH);
-        }
-    }
+//    @Environment(EnvType.SERVER)
+//    @Override
+//    public double getJumpStrength() {
+//        if(!this.getWorld().isClient() && this.getWorld().getGameRules().getBoolean(HORSE_JUMP_BUFF)) {
+//            LOGGER.info("yes");
+//            return this.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH) * 5;
+//        } else {
+//            LOGGER.info("no");
+//            return this.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH);
+//        }
+//    }
 
     @Override
     public void tick() {
@@ -243,7 +247,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
             }
         }
 
-        LOGGER.info("{} {}", this.getWorld().getGameRules().getBoolean(HORSE_JUMP_BUFF), this.getWorld().isClient());
+//        LOGGER.info("{} {}", this.getWorld().getGameRules().getBoolean(HORSE_JUMP_BUFF), this.getWorld().isClient());
 
 
         //Recharges the dash

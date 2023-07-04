@@ -2,12 +2,11 @@ package net.superkat.giddyup.mixin;
 
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.superkat.giddyup.config.GiddyUpServerConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import static net.superkat.giddyup.config.GiddyUpConfig.INSTANCE;
 
 @Mixin(AbstractHorseEntity.class)
 public class AbstractHorseEntityMixin {
@@ -16,7 +15,7 @@ public class AbstractHorseEntityMixin {
 	@Inject(at = @At("TAIL"), method = "getSaddledSpeed", cancellable = true)
 	private void speedBuff(PlayerEntity controllingPlayer, CallbackInfoReturnable<Float> cir) {
 		float returnSpeed = cir.getReturnValue();
-		if(INSTANCE.getConfig().horseSpeedBuff) {
+		if(GiddyUpServerConfig.ServerConfig.Buffs.isHorseSpeedBuff()) {
 			returnSpeed = cir.getReturnValue() * 1.25f;
 		}
 		cir.setReturnValue(returnSpeed);
@@ -27,7 +26,7 @@ public class AbstractHorseEntityMixin {
 	@Inject(at = @At("TAIL"), method = "getJumpStrength", cancellable = true)
 	private void jumpBuff(CallbackInfoReturnable<Double> cir) {
 		double returnJump = cir.getReturnValue();
-		if(INSTANCE.getConfig().horseJumpBuff) {
+		if(GiddyUpServerConfig.ServerConfig.Buffs.isHorseJumpBuff()) {
 			returnJump = cir.getReturnValue() * 1.15;
 		}
 		cir.setReturnValue(returnJump);
