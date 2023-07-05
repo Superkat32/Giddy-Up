@@ -23,6 +23,8 @@ public class GiddyUpConfigModel {
 
     public static class NestedMaxDashes {
 
+        @SectionHeader("Initial Dashes")
+
         @Sync(Option.SyncMode.OVERRIDE_CLIENT)
         @RangeConstraint(min = 0, max = 5)
         public int whiteHorseMaxDash = 4;
@@ -51,6 +53,8 @@ public class GiddyUpConfigModel {
         @RangeConstraint(min = 0, max = 5)
         public int darkbrownHorseMaxDash = 1;
 
+        @SectionHeader("Additional Dashes")
+
         @Sync(Option.SyncMode.OVERRIDE_CLIENT)
         @RangeConstraint(min = 0, max = 5)
         public int whiteHorseMarking = 2;
@@ -65,11 +69,11 @@ public class GiddyUpConfigModel {
 
         @Sync(Option.SyncMode.OVERRIDE_CLIENT)
         @RangeConstraint(min = 0, max = 5)
-        public int noneHorseMarking = 1;
+        public int whiteDotsHorseMarking = 0;
 
         @Sync(Option.SyncMode.OVERRIDE_CLIENT)
         @RangeConstraint(min = 0, max = 5)
-        public int whiteDotsHorseMarking = 0;
+        public int noneHorseMarking = 1;
     }
 
 

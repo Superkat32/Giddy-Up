@@ -36,7 +36,7 @@ public class DashElementScreen extends BaseOwoScreen<FlowLayout> {
                         Containers.verticalFlow(Sizing.content(), Sizing.content())
                         .child(
                             Containers.verticalFlow(Sizing.content(), Sizing.content())
-                                    .child(Components.button(Text.literal("Save and return"), button -> {
+                                    .child(Components.button(Text.translatable("giddyup.icon.savehud"), button -> {
                                         this.client.setScreen(ConfigScreen.create(CONFIG, null));
                                     }))
                                     .padding(Insets.of(5))
