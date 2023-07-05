@@ -7,7 +7,8 @@ import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.util.Identifier;
 import net.superkat.giddyup.config.DashElementScreen;
 
-import static net.superkat.giddyup.config.GiddyUpConfig.INSTANCE;
+import static net.superkat.giddyup.GiddyUpMain.CONFIG;
+
 
 public class DashRenderer {
     public Identifier dash_ready = new Identifier(GiddyUpMain.MOD_ID, "textures/dash/dash.png");
@@ -37,8 +38,8 @@ public class DashRenderer {
         int height = client.getWindow().getScaledHeight();
 //        GiddyUpMain.LOGGER.info("width: " + width);
 //        GiddyUpMain.LOGGER.info("height: " + height);
-        textureSize = INSTANCE.getConfig().textureSize;
-        textureSpacing = INSTANCE.getConfig().textureSpacing;
+        textureSize = CONFIG.nestedDashes.textureSize();
+        textureSpacing = CONFIG.nestedDashes.textureSpacing();
 //        int x = 0;
 //        int y = 0;
 //        easeOutTick = 0;
@@ -47,7 +48,7 @@ public class DashRenderer {
             y = 0;
             easeOutTick= 0;
         } else if(client.currentScreen instanceof DashElementScreen) {
-            y = INSTANCE.getConfig().iconY;
+            y = CONFIG.nestedDashes.iconY();
         }
 //        int y = 160;
         if(client.player.hasVehicle() && client.player.getVehicle() instanceof HorseEntity && ((HorseEntity) client.player.getVehicle()).isTame() && ((HorseEntity) client.player.getVehicle()).isSaddled() && maxDashes != 0 && shouldRender) {
@@ -56,21 +57,21 @@ public class DashRenderer {
             int finishX = 0;
             int startY = 0;
 
-            if(easeOutTick < 40 && INSTANCE.getConfig().easeIn) {
+            if(easeOutTick < 40 && CONFIG.nestedDashes.easeIn()) {
                 float t = (float) easeOutTick / 40;
-                float easedValue = textureSize * 2 + height + (INSTANCE.getConfig().iconY - height - textureSize * 2) * (1 - (1 - t) * (1 - t));
+                float easedValue = textureSize * 2 + height + (CONFIG.nestedDashes.iconY() - height - textureSize * 2) * (1 - (1 - t) * (1 - t));
                 startY = Math.round(easedValue);
                 easeOutTick++;
 //          0.35f - (0.8f * (float) currentRechargeTicks / 115)
             } else {
-                startY = INSTANCE.getConfig().iconY;
+                startY = CONFIG.nestedDashes.iconY();
             }
 
 
 //            RenderSystem.enableColorLogicOp();
             for(int i = 0; i < maxDashes; i++) {
                 finishX = startX + (textureSize + textureSpacing) * i;
-                x = finishX + INSTANCE.getConfig().iconX;
+                x = finishX + CONFIG.nestedDashes.iconX();
                 y = startY;
 //                int currentDash = dashesRemaining;
                 RenderSystem.enableBlend();
@@ -85,7 +86,7 @@ public class DashRenderer {
 //                    RenderSystem.disableDepthTest();
 //                    RenderSystem.enableCull();
 //                    LOGGER.info(String.valueOf(iconAlpha));
-                    if(INSTANCE.getConfig().opacityRecharge) {
+                    if(CONFIG.nestedDashes.opacityRecharge()) {
                         context.setShaderColor(1f, 1f, 1f, iconAlpha);
                         context.drawTexture(dash_ready, x, y, 0.0f, 0.0f, textureSize, textureSize, textureSize, textureSize);
                     }

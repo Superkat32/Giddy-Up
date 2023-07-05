@@ -9,7 +9,6 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.passive.HorseEntity;
-import net.superkat.giddyup.config.GiddyUpConfig;
 import net.superkat.giddyup.particles.DustParticle;
 import org.lwjgl.glfw.GLFW;
 
@@ -25,7 +24,7 @@ public class GiddyUpClient implements ClientModInitializer {
         ));
     @Override
     public void onInitializeClient() {
-        GiddyUpConfig.INSTANCE.load();
+//        GiddyUpConfig.INSTANCE.load();
         ParticleFactoryRegistry.getInstance().register(GiddyUpMain.DUST, DustParticle.Factory::new);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(client.getNetworkHandler() != null) {

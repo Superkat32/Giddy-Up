@@ -4,9 +4,8 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
-import net.superkat.giddyup.GiddyUpMain;
 
-import static net.superkat.giddyup.config.GiddyUpConfig.INSTANCE;
+import static net.superkat.giddyup.GiddyUpMain.CONFIG;
 
 public class DashElementScreen extends Screen {
     private Screen lastScreen;
@@ -24,8 +23,10 @@ public class DashElementScreen extends Screen {
         var buttonHeight = 15;
         var buttonCenterX = (width / 2) - (buttonWidth / 2);
         var buttonCenterY = (height / 2) - (buttonHeight / 2);
-        x = INSTANCE.getConfig().iconX;
-        y = INSTANCE.getConfig().iconY;
+        x = CONFIG.nestedDashes.iconX();
+        y = CONFIG.nestedDashes.iconY();
+//        x = INSTANCE.getConfig().iconX;
+//        y = INSTANCE.getConfig().iconY;
 
         addDrawableChild(
                 ButtonWidget.builder(Text.translatable("giddyup.icon.exit"), button -> {
@@ -37,10 +38,10 @@ public class DashElementScreen extends Screen {
         );
         addDrawableChild(
                 ButtonWidget.builder(Text.translatable("giddyup.icon.reset"), button -> {
-                            x = INSTANCE.getDefaults().iconX;
-                            y = INSTANCE.getDefaults().iconY;
-                            INSTANCE.getConfig().iconX = x;
-                            INSTANCE.getConfig().iconY = y;
+                            x = CONFIG.nestedDashes.iconX();
+                            y = CONFIG.nestedDashes.iconY();
+                            CONFIG.nestedDashes.iconX(x);
+                            CONFIG.nestedDashes.iconY(y);
                         })
                         .position(buttonCenterX, buttonCenterY + 10)
                         .size(buttonWidth, buttonHeight)
@@ -49,7 +50,7 @@ public class DashElementScreen extends Screen {
         addDrawableChild(
                 ButtonWidget.builder(Text.literal("+"), button -> {
                             x += 1;
-                            INSTANCE.getConfig().iconX = x;
+                            CONFIG.nestedDashes.iconX(x);
                         })
                         .position((int) (buttonCenterX + buttonWidth / 1.5), buttonCenterY - 20)
                         .size(buttonWidth / 3, buttonHeight)
@@ -58,7 +59,7 @@ public class DashElementScreen extends Screen {
         addDrawableChild(
                 ButtonWidget.builder(Text.literal("-"), button -> {
                             x -= 1;
-                            INSTANCE.getConfig().iconX = x;
+                            CONFIG.nestedDashes.iconX(x);
                         })
                         .position(buttonCenterX + buttonWidth / 3, buttonCenterY - 20)
                         .size(buttonWidth / 3, buttonHeight)
@@ -76,7 +77,7 @@ public class DashElementScreen extends Screen {
         addDrawableChild(
                 ButtonWidget.builder(Text.literal("+"), button -> {
                             y += 1;
-                            INSTANCE.getConfig().iconY = y;
+                            CONFIG.nestedDashes.iconY(y);
                         })
                         .position((int) (buttonCenterX + buttonWidth / 1.5), buttonCenterY - 5)
                         .size(buttonWidth / 3, buttonHeight)
@@ -85,7 +86,7 @@ public class DashElementScreen extends Screen {
         addDrawableChild(
                 ButtonWidget.builder(Text.literal("-"), button -> {
                             y -= 1;
-                            INSTANCE.getConfig().iconY = y;
+                            CONFIG.nestedDashes.iconY(y);
                         })
                         .position(buttonCenterX + buttonWidth / 3, buttonCenterY - 5)
                         .size(buttonWidth / 3, buttonHeight)
@@ -111,18 +112,18 @@ public class DashElementScreen extends Screen {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if(!this.isDragging() && button == 0) {
-            if(!(INSTANCE.getConfig().iconX + deltaX + 120 == this.client.getWindow().getScaledWidth())) {
+            if(!(CONFIG.nestedDashes.iconX() + deltaX + 120 == this.client.getWindow().getScaledWidth())) {
                 x += deltaX;
-                INSTANCE.getConfig().iconX = x;
+                CONFIG.nestedDashes.iconX(x);
 //                INSTANCE.getDefaults().iconX = x;
             }
-            if(!(INSTANCE.getConfig().iconY + deltaY + 20 == this.client.getWindow().getScaledHeight())) {
+            if(!(CONFIG.nestedDashes.iconY() + deltaY + 20 == this.client.getWindow().getScaledHeight())) {
                 y += deltaY;
-                INSTANCE.getConfig().iconY = y;
+                CONFIG.nestedDashes.iconY(y);
 //                INSTANCE.getDefaults().iconY = y;
             }
-            GiddyUpMain.LOGGER.info("iconX: " + INSTANCE.getConfig().iconX);
-            GiddyUpMain.LOGGER.info("iconY: " + INSTANCE.getConfig().iconY);
+//            GiddyUpMain.LOGGER.info("iconX: " + INSTANCE.getConfig().iconX);
+//            GiddyUpMain.LOGGER.info("iconY: " + INSTANCE.getConfig().iconY);
 //            INSTANCE.save();
         }
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
