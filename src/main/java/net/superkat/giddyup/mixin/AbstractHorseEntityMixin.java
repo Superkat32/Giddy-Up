@@ -15,7 +15,7 @@ public class AbstractHorseEntityMixin {
 	@Inject(at = @At("TAIL"), method = "getSaddledSpeed", cancellable = true)
 	private void speedBuff(PlayerEntity controllingPlayer, CallbackInfoReturnable<Float> cir) {
 		float returnSpeed = cir.getReturnValue();
-		if(GiddyUpMain.CONFIG.nestedBuffs.horseSpeedBuff()) {
+		if(GiddyUpMain.CONFIG.horseSpeedBuff()) {
 			returnSpeed = cir.getReturnValue() * 1.25f;
 		}
 		cir.setReturnValue(returnSpeed);
@@ -26,7 +26,7 @@ public class AbstractHorseEntityMixin {
 	@Inject(at = @At("TAIL"), method = "getJumpStrength", cancellable = true)
 	private void jumpBuff(CallbackInfoReturnable<Double> cir) {
 		double returnJump = cir.getReturnValue();
-		if(GiddyUpMain.CONFIG.nestedBuffs.horseJumpBuff()) {
+		if(GiddyUpMain.CONFIG.horseJumpBuff()) {
 			returnJump = cir.getReturnValue() * 1.15;
 		}
 		cir.setReturnValue(returnJump);

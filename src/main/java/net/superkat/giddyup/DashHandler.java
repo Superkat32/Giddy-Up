@@ -4,6 +4,7 @@ import net.minecraft.entity.passive.HorseColor;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.passive.HorseMarking;
 
+import static net.superkat.giddyup.GiddyUpMain.CONFIG;
 import static net.superkat.giddyup.GiddyUpMain.LOGGER;
 
 public class DashHandler {
@@ -133,32 +134,33 @@ public class DashHandler {
         int returnValue = 0;
 //        LOGGER.info("maxDashes1");
         if(color == HorseColor.WHITE) {
-            returnValue = whiteHorseMaxDash;
+//            returnValue = whiteHorseMaxDash = GiddyUpMain.
+            returnValue = whiteHorseMaxDash = CONFIG.nestedMaxDashes.whiteHorseMaxDash();
         } else if (color == HorseColor.CREAMY) {
-            returnValue = creamyHorseMaxDash;
+            returnValue = creamyHorseMaxDash = CONFIG.nestedMaxDashes.creamyHorseMaxDash();
         } else if (color == HorseColor.CHESTNUT) {
-            returnValue = chestnutHorseMaxDash;
+            returnValue = chestnutHorseMaxDash = CONFIG.nestedMaxDashes.chestnutHorseMaxDash();
         } else if (color == HorseColor.BROWN) {
-            returnValue = brownHorseMaxDash;
+            returnValue = brownHorseMaxDash = CONFIG.nestedMaxDashes.brownHorseMaxDash();
         } else if (color == HorseColor.BLACK) {
-            returnValue = blackHorseMaxDash;
+            returnValue = blackHorseMaxDash = CONFIG.nestedMaxDashes.blackHorseMaxDash();
         } else if (color == HorseColor.GRAY) {
-            returnValue = grayHorseMaxDash;
+            returnValue = grayHorseMaxDash = CONFIG.nestedMaxDashes.grayHorseMaxDash();
         } else if (color == HorseColor.DARK_BROWN) {
-            returnValue = darkbrownHorseMaxDash;
+            returnValue = darkbrownHorseMaxDash = CONFIG.nestedMaxDashes.darkbrownHorseMaxDash();
         }
 
 //        LOGGER.info("maxDashes2");
         if(marking == HorseMarking.WHITE) {
-            returnValue += whiteHorseMarking;
+            returnValue += whiteHorseMarking = CONFIG.nestedMaxDashes.whiteHorseMarking();
         } else if(marking == HorseMarking.WHITE_FIELD) {
-            returnValue += whiteFieldHorseMarking;
+            returnValue += whiteFieldHorseMarking = CONFIG.nestedMaxDashes.whiteFieldHorseMarking();
         } else if(marking == HorseMarking.BLACK_DOTS) {
-            returnValue += blackDotsHorseMarking;
+            returnValue += blackDotsHorseMarking = CONFIG.nestedMaxDashes.blackDotsHorseMarking();
         } else if(marking == HorseMarking.NONE) {
-            returnValue += noneHorseMarking;
+            returnValue += noneHorseMarking = CONFIG.nestedMaxDashes.noneHorseMarking();
         } else if (marking == HorseMarking.WHITE_DOTS) {
-            returnValue += whiteDotsHorseMarking;
+            returnValue += whiteDotsHorseMarking = CONFIG.nestedMaxDashes.whiteDotsHorseMarking();
         }
         //        LOGGER.info("maxDashes3");
         if(returnValue > 5) {

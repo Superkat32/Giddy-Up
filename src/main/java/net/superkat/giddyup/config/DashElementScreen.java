@@ -23,8 +23,8 @@ public class DashElementScreen extends Screen {
         var buttonHeight = 15;
         var buttonCenterX = (width / 2) - (buttonWidth / 2);
         var buttonCenterY = (height / 2) - (buttonHeight / 2);
-        x = CONFIG.nestedDashes.iconX();
-        y = CONFIG.nestedDashes.iconY();
+        x = CONFIG.iconX();
+        y = CONFIG.iconY();
 //        x = INSTANCE.getConfig().iconX;
 //        y = INSTANCE.getConfig().iconY;
 
@@ -38,10 +38,10 @@ public class DashElementScreen extends Screen {
         );
         addDrawableChild(
                 ButtonWidget.builder(Text.translatable("giddyup.icon.reset"), button -> {
-                            x = CONFIG.nestedDashes.iconX();
-                            y = CONFIG.nestedDashes.iconY();
-                            CONFIG.nestedDashes.iconX(x);
-                            CONFIG.nestedDashes.iconY(y);
+                            x = CONFIG.iconX();
+                            y = CONFIG.iconY();
+                            CONFIG.iconX(x);
+                            CONFIG.iconY(y);
                         })
                         .position(buttonCenterX, buttonCenterY + 10)
                         .size(buttonWidth, buttonHeight)
@@ -50,7 +50,7 @@ public class DashElementScreen extends Screen {
         addDrawableChild(
                 ButtonWidget.builder(Text.literal("+"), button -> {
                             x += 1;
-                            CONFIG.nestedDashes.iconX(x);
+                            CONFIG.iconX(x);
                         })
                         .position((int) (buttonCenterX + buttonWidth / 1.5), buttonCenterY - 20)
                         .size(buttonWidth / 3, buttonHeight)
@@ -59,7 +59,7 @@ public class DashElementScreen extends Screen {
         addDrawableChild(
                 ButtonWidget.builder(Text.literal("-"), button -> {
                             x -= 1;
-                            CONFIG.nestedDashes.iconX(x);
+                            CONFIG.iconX(x);
                         })
                         .position(buttonCenterX + buttonWidth / 3, buttonCenterY - 20)
                         .size(buttonWidth / 3, buttonHeight)
@@ -77,7 +77,7 @@ public class DashElementScreen extends Screen {
         addDrawableChild(
                 ButtonWidget.builder(Text.literal("+"), button -> {
                             y += 1;
-                            CONFIG.nestedDashes.iconY(y);
+                            CONFIG.iconY(y);
                         })
                         .position((int) (buttonCenterX + buttonWidth / 1.5), buttonCenterY - 5)
                         .size(buttonWidth / 3, buttonHeight)
@@ -86,7 +86,7 @@ public class DashElementScreen extends Screen {
         addDrawableChild(
                 ButtonWidget.builder(Text.literal("-"), button -> {
                             y -= 1;
-                            CONFIG.nestedDashes.iconY(y);
+                            CONFIG.iconY(y);
                         })
                         .position(buttonCenterX + buttonWidth / 3, buttonCenterY - 5)
                         .size(buttonWidth / 3, buttonHeight)
@@ -112,14 +112,14 @@ public class DashElementScreen extends Screen {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if(!this.isDragging() && button == 0) {
-            if(!(CONFIG.nestedDashes.iconX() + deltaX + 120 == this.client.getWindow().getScaledWidth())) {
+            if(!(CONFIG.iconX() + deltaX + 120 == this.client.getWindow().getScaledWidth())) {
                 x += deltaX;
-                CONFIG.nestedDashes.iconX(x);
+                CONFIG.iconX(x);
 //                INSTANCE.getDefaults().iconX = x;
             }
-            if(!(CONFIG.nestedDashes.iconY() + deltaY + 20 == this.client.getWindow().getScaledHeight())) {
+            if(!(CONFIG.iconY() + deltaY + 20 == this.client.getWindow().getScaledHeight())) {
                 y += deltaY;
-                CONFIG.nestedDashes.iconY(y);
+                CONFIG.iconY(y);
 //                INSTANCE.getDefaults().iconY = y;
             }
 //            GiddyUpMain.LOGGER.info("iconX: " + INSTANCE.getConfig().iconX);
