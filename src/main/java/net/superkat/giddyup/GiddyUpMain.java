@@ -14,7 +14,6 @@ public class GiddyUpMain implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("giddyup");
 	public static final String MOD_ID = "giddyup";
 	public static final DefaultParticleType DUST = FabricParticleTypes.simple();
-
 	public static final GiddyUpConfig CONFIG = GiddyUpConfig.createAndLoad();
 
 

@@ -75,11 +75,13 @@ public class GiddyUpConfigModel {
 
     @SectionHeader("Dash HUD")
 
+    public boolean openScreenNextTime = false;
+
     @RangeConstraint(min = -500, max = 500)
     public int iconX = 0;
 
     @RangeConstraint(min = -500, max = 500)
-    public int iconY = 0;
+    public int iconY = 160;
 
     @RangeConstraint(min = 0, max = 30)
     public int textureSize = 20;
@@ -90,5 +92,6 @@ public class GiddyUpConfigModel {
     public boolean easeIn = true;
 
     public boolean opacityRecharge = true;
+
 
 }

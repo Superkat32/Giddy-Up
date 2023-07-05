@@ -52,6 +52,10 @@ public class DashRenderer {
         }
 //        int y = 160;
         if(client.player.hasVehicle() && client.player.getVehicle() instanceof HorseEntity && ((HorseEntity) client.player.getVehicle()).isTame() && ((HorseEntity) client.player.getVehicle()).isSaddled() && maxDashes != 0 && shouldRender) {
+            if(CONFIG.openScreenNextTime()) {
+                MinecraftClient.getInstance().setScreen(new DashElementScreen());
+                CONFIG.openScreenNextTime(false);
+            }
             int totalWidth = maxDashes * textureSize + (maxDashes - 1) * textureSize;
             int startX = (width - totalWidth) / 2;
             int finishX = 0;
