@@ -74,14 +74,10 @@ public class DashElementScreen extends BaseOwoScreen<FlowLayout> {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if(!this.isDragging() && button == 0) {
-            if(!(CONFIG.iconX() + deltaX + 120 == this.client.getWindow().getScaledWidth())) {
-                x += deltaX;
-                CONFIG.iconX(x);
-            }
-            if(!(CONFIG.iconY() + deltaY + 20 == this.client.getWindow().getScaledHeight())) {
-                y += deltaY;
-                CONFIG.iconY(y);
-            }
+            x += deltaX;
+            CONFIG.iconX(x);
+            y += deltaY;
+            CONFIG.iconY(y);
         }
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }

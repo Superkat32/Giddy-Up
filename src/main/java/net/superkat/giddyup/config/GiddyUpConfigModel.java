@@ -80,7 +80,7 @@ public class GiddyUpConfigModel {
     @RangeConstraint(min = -500, max = 500)
     public int iconX = 0;
 
-    @RangeConstraint(min = -500, max = 500)
+    @RangeConstraint(min = -300, max = 300)
     public int iconY = 160;
 
     @RangeConstraint(min = 0, max = 30)
