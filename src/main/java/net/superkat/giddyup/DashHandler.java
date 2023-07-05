@@ -47,46 +47,9 @@ public class DashHandler {
             canDash = true;
             dashing = true;
             DashRenderer.setDashing(true);
-//            determineMaxDashes(horse, horse.getVariant(), horse.getMarking());
-//            dashing = true;
-//            dashTicks = dashDuration;
-//            cooldownTicks = dashCooldown;
-//            rechargeTicks = dashRecharge;
-//            remainingDashes--;
-//            addDashBoost(horse);
         }
     }
 
-    //Called by HorseEntityMixin
-//    public static void tick(HorseEntity horse) {
-//        if(horse == null) {
-//            return;
-//        }
-//        LOGGER.info("cooldownTicks: " + cooldownTicks);
-//        LOGGER.info("dashTicks: " + dashTicks);
-//        LOGGER.info("dashes: " + remainingDashes);
-//        LOGGER.info("Max dashes: " + maxDashes);
-//        if(cooldownTicks > 0) {
-//            --cooldownTicks;
-//            --dashTicks;
-//            if(dashTicks <= 0) {
-//                removeDashBoost(horse);
-//                dashing = false;
-//            }
-//        }
-
-//        LOGGER.info("rechargeTicks: " + rechargeTicks);
-//        if(rechargeTicks > 0) {
-//            --rechargeTicks;
-//            if(rechargeTicks == 0) {
-//                if(remainingDashes == maxDashes) {
-//                    return;
-//                }
-//                remainingDashes++;
-//                rechargeTicks = dashRecharge;
-//            }
-//        }
-//    }
     //Called by HorseEntityMixin
     public static void renderHUD() {
         DashRenderer.shouldRender = true;
@@ -96,7 +59,6 @@ public class DashHandler {
 //            LOGGER.info("ok1");
         } else if (currentRechargeTicks > 7) {
             DashRenderer.iconAlpha = 0.35f - (0.8f * (float) currentRechargeTicks / 115);
-//            DashRenderer.iconAlpha += 0.0022;
 //            LOGGER.info("ok2");
         }
         if(currentDashTicks == 0) {
@@ -105,29 +67,6 @@ public class DashHandler {
 
     }
 
-//    public static void addDashBoost(HorseEntity horse) {
-//        EntityAttributeInstance speed = horse.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
-//        if(speed == null) {
-//            return;
-//        }
-//
-//        LOGGER.info("addDashBoost");
-//        if(speed.getModifier(HORSE_DASH_ID) != null) {
-//            return;
-//        }
-//        speed.addTemporaryModifier(new EntityAttributeModifier(HORSE_DASH_ID, "Horse dash speed boost", 0.23, EntityAttributeModifier.Operation.ADDITION));
-//    }
-
-//    public static void removeDashBoost(HorseEntity horse) {
-//        EntityAttributeInstance speed = horse.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
-//        LOGGER.info("removeDashBoost: 1");
-//        if(speed != null) {
-//            if(speed.getModifier(HORSE_DASH_ID) != null) {
-//                LOGGER.info("removeDashBoost: 2");
-//                speed.removeModifier(HORSE_DASH_ID);
-//            }
-//        }
-//    }
 
     //Called by HorseEntityMixin
     public static int determineMaxDashes(HorseEntity horse, HorseColor color, HorseMarking marking) {

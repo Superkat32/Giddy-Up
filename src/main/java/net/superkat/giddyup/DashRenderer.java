@@ -40,17 +40,12 @@ public class DashRenderer {
 //        GiddyUpMain.LOGGER.info("height: " + height);
         textureSize = CONFIG.textureSize();
         textureSpacing = CONFIG.textureSpacing();
-//        int x = 0;
-//        int y = 0;
-//        easeOutTick = 0;
-//        int y = 187;
         if(!(client.player.getVehicle() instanceof HorseEntity)) {
             y = 0;
             easeOutTick= 0;
         } else if(client.currentScreen instanceof DashElementScreen) {
             y = CONFIG.iconY();
         }
-//        int y = 160;
         if(client.player.hasVehicle() && client.player.getVehicle() instanceof HorseEntity && ((HorseEntity) client.player.getVehicle()).isTame() && ((HorseEntity) client.player.getVehicle()).isSaddled() && maxDashes != 0 && shouldRender) {
             if(CONFIG.openScreenNextTime()) {
                 MinecraftClient.getInstance().setScreen(new DashElementScreen());

@@ -48,39 +48,6 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     @Override
     protected void tickControlled(PlayerEntity controllingPlayer, Vec3d movementInput) {
         super.tickControlled(controllingPlayer, movementInput);
-//        this.world.getGameRules().getBoolean(TEST);
-
-//        if(this.getVariant() == HorseColor.WHITE) {
-//            maxDashes = 5;
-//        } else if (this.getVariant() == HorseColor.CREAMY) {
-//            maxDashes = 4;
-//        } else if (this.getVariant() == HorseColor.CHESTNUT) {
-//            maxDashes = 4;
-//        } else if (this.getVariant() == HorseColor.BROWN) {
-//            maxDashes = 3;
-//        } else if (this.getVariant() == HorseColor.BLACK) {
-//            maxDashes = 3;
-//        } else if (this.getVariant() == HorseColor.GRAY) {
-//            maxDashes = 2;
-//        } else if (this.getVariant() == HorseColor.DARK_BROWN) {
-//            maxDashes = 1;
-//        }
-//
-//        if(maxDashes != 5) {
-//            if(this.getMarking() == HorseMarking.WHITE) {
-//                if(maxDashes + 2 > 5) {
-//                    maxDashes = 5;
-//                } else {
-//                    maxDashes += 2;
-//                }
-//            } else if(this.getMarking() == HorseMarking.WHITE_FIELD) {
-//                maxDashes++;
-//            } else if(this.getMarking() == HorseMarking.BLACK_DOTS) {
-//                maxDashes++;
-//            } else if(this.getMarking() == HorseMarking.NONE) {
-//                maxDashes++;
-//            }
-//        }
         ticksRidden++;
         updateDashHandler(false);
 
@@ -197,28 +164,6 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         return horse;
     }
 
-//    @Environment(EnvType.SERVER)
-//    @Override
-//    protected float getSaddledSpeed(PlayerEntity controllingPlayer) {
-//        if(this.getWorld().getGameRules().getBoolean(HORSE_SPEED_BUFF)) {
-//            return (float)this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 1.25f;
-//        } else {
-//            return (float)this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED);
-//        }
-//    }
-
-//    @Environment(EnvType.SERVER)
-//    @Override
-//    public double getJumpStrength() {
-//        if(!this.getWorld().isClient() && this.getWorld().getGameRules().getBoolean(HORSE_JUMP_BUFF)) {
-//            LOGGER.info("yes");
-//            return this.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH) * 5;
-//        } else {
-//            LOGGER.info("no");
-//            return this.getAttributeValue(EntityAttributes.HORSE_JUMP_STRENGTH);
-//        }
-//    }
-
     @Override
     public void tick() {
         super.tick();
@@ -247,8 +192,6 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
             }
         }
 
-//        LOGGER.info("{} {}", this.getWorld().getGameRules().getBoolean(HORSE_JUMP_BUFF), this.getWorld().isClient());
-
 
         //Recharges the dash
         if(rechargeTicks > 0) {
@@ -260,13 +203,9 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
                 dashesRemaining++;
                 rechargeTicks = 115;
                 if(this.getControllingPassenger() !=  null) {
-//                    DashRenderer.iconAlpha = 0f;
                     updateDashHud();
                 }
             }
-//            else if(rechargeTicks > 3 && this.getControllingPassenger() != null) {
-//                DashRenderer.iconAlpha = 0.3f - (0.8f * (float) rechargeTicks / dashRechargeTime);
-//            }
         }
 
         //Adds a brief cooldown before allowing another dash
@@ -283,10 +222,4 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
             }
         }
     }
-
-//    @Override
-//    public boolean canSprintAsVehicle() {
-//        return true;
-//    }
-
 }
