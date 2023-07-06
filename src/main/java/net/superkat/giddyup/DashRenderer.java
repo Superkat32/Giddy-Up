@@ -9,12 +9,11 @@ import net.superkat.giddyup.config.DashElementScreen;
 
 import static net.superkat.giddyup.GiddyUpMain.CONFIG;
 
-
 public class DashRenderer {
     public Identifier dash_ready = new Identifier(GiddyUpMain.MOD_ID, "textures/dash/dash.png");
     public Identifier dash_used = new Identifier(GiddyUpMain.MOD_ID, "textures/dash/dash_used.png");
     public static boolean dashing;
-    public static boolean shouldRender = false;
+    public static boolean shouldRender;
     public static int maxDashes;
     public static int dashesRemaining;
     public static boolean isDashOneReady;

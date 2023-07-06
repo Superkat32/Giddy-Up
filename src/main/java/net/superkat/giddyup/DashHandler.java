@@ -1,5 +1,8 @@
 package net.superkat.giddyup;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.passive.HorseColor;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.passive.HorseMarking;
@@ -51,20 +54,49 @@ public class DashHandler {
     }
 
     //Called by HorseEntityMixin
+    @Environment(EnvType.CLIENT)
     public static void renderHUD() {
-        DashRenderer.shouldRender = true;
+        //FIXME - Something here causes server to crash
+        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+            DashRenderer.shouldRender = true;
+            if(currentRechargeTicks == 1) {
+                DashRenderer.iconAlpha = 0;
+    //            LOGGER.info("ok1");
+            } else if (currentRechargeTicks > 7) {
+                DashRenderer.iconAlpha = 0.35f - (0.8f * (float) currentRechargeTicks / 115);
+    //            LOGGER.info("ok2");
+            }
+            if(currentDashTicks == 0) {
+                DashRenderer.setDashing(false);
+            }
+        }
 //        LOGGER.info(String.valueOf(currentRechargeTicks));
-        if(currentRechargeTicks == 1) {
-            DashRenderer.iconAlpha = 0;
-//            LOGGER.info("ok1");
-        } else if (currentRechargeTicks > 7) {
-            DashRenderer.iconAlpha = 0.35f - (0.8f * (float) currentRechargeTicks / 115);
-//            LOGGER.info("ok2");
-        }
-        if(currentDashTicks == 0) {
-            DashRenderer.setDashing(false);
-        }
+    }
 
+    //Called by HorseEntityMixin
+
+    public static void updateDashHud(int maxDashes, int dashesRemaining) {
+        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+            DashRenderer.maxDashes = maxDashes;
+            DashRenderer.dashesRemaining = dashesRemaining;
+
+            DashRenderer.isDashFiveReady = dashesRemaining >= 5;
+            DashRenderer.isDashFourReady = dashesRemaining >= 4;
+            DashRenderer.isDashThreeReady = dashesRemaining >= 3;
+            DashRenderer.isDashTwoReady = dashesRemaining >= 2;
+            DashRenderer.isDashOneReady = dashesRemaining >= 1;
+
+            if (dashesRemaining < 0 || dashesRemaining > 5) {
+                LOGGER.warn("DASHES REMAINING UNKNOWN: " + dashesRemaining);
+                DashRenderer.isDashFiveReady = false;
+                DashRenderer.isDashFourReady = false;
+                DashRenderer.isDashThreeReady = false;
+                DashRenderer.isDashTwoReady = false;
+                DashRenderer.isDashOneReady = false;
+            }
+        } else {
+            LOGGER.info("e");
+        }
     }
 
 
