@@ -22,6 +22,7 @@ public class GiddyUpClient implements ClientModInitializer {
                 GLFW.GLFW_KEY_H,
                 "giddyup.category.keybinds"
         ));
+
     @Override
     public void onInitializeClient() {
 //        GiddyUpConfig.INSTANCE.load();

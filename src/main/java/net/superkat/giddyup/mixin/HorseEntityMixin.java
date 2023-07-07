@@ -17,6 +17,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.superkat.giddyup.DashHandler;
 import net.superkat.giddyup.DashRenderer;
+import net.superkat.giddyup.GiddyUpMain;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -228,9 +229,34 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         }
 
         //dust particles
+        double deltaX = this.getX() - prevX;
+        double deltaY = this.getY() - prevY;
+        double deltaZ = this.getZ() - prevZ;
+
+        double distanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+        double speedSquared = 0.35 * 0.35;
+
+        if (distanceSquared >= speedSquared) {
+//            LOGGER.info("yay");
+            if(this.isOnGround()) {
+//                LOGGER.info("yay2");
+                int amount = this.random.nextBetween(1, 4);
+                for(int smokeAmount = amount; smokeAmount >= 1; smokeAmount--) {
+                    //The particle's "velocity" isn't actually the velocity, it is used to determine other numbers
+                    //The velX number is used to determine the dust particle's scale
+                    //The velY number is used to determine the dust particle's age,
+                    //which in turn is used to determine how quickly the particle should shrink
+                    if(dashing) {
+                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat() * 2, 80, 0.0);
+                    } else {
+                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat(), 40, 0.0);
+                    }
+                }
+            }
+        }
+//        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat(), 40, 0.0);
 //        double velX = Math.abs(this.getVelocity().getX());
 //        double velZ = Math.abs(this.getVelocity().getZ());
-////        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat(), 40, 0.0);
 //        if(velX > 0.15 || velZ > 0.15) {
 //            if(this.isOnGround() && ticksRidden % 2 == 0) {
 //                int amount = this.random.nextBetween(1, 4);
@@ -239,9 +265,9 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
 //                    //The velX number is used to determine the dust particle's scale
 //                    //The velY number is used to determine the dust particle's age, which in turn is used to determine how quickly the particle should shrink
 //                    if(dashing) {
-////                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat() * 2, 80, 0.0);
+//                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat() * 2, 80, 0.0);
 //                    } else {
-////                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat(), 40, 0.0);
+//                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat(), 40, 0.0);
 //                    }
 //                }
 //            }
