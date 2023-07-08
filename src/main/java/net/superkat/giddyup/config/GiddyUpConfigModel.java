@@ -7,14 +7,25 @@ import net.superkat.giddyup.GiddyUpMain;
 @Modmenu(modId = GiddyUpMain.MOD_ID)
 @Config(name = "giddyupconfig", wrapperName = "GiddyUpConfig")
 public class GiddyUpConfigModel {
+    @SectionHeader("Dash HUD")
 
-    @SectionHeader("Buffs")
+    public boolean openScreenNextTime = false;
 
-    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
-    public boolean horseSpeedBuff = true;
+    @RangeConstraint(min = -500, max = 500)
+    public int iconX = 0;
 
-    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
-    public boolean horseJumpBuff = true;
+    @RangeConstraint(min = -300, max = 300)
+    public int iconY = 160;
+
+    @RangeConstraint(min = 0, max = 30)
+    public int textureSize = 20;
+
+    @RangeConstraint(min = 0, max = 30)
+    public int textureSpacing = 20;
+
+    public boolean easeIn = true;
+
+    public boolean opacityRecharge = true;
 
     @SectionHeader("Dashes")
 
@@ -77,25 +88,6 @@ public class GiddyUpConfigModel {
     }
 
 
-    @SectionHeader("Dash HUD")
-
-    public boolean openScreenNextTime = false;
-
-    @RangeConstraint(min = -500, max = 500)
-    public int iconX = 0;
-
-    @RangeConstraint(min = -300, max = 300)
-    public int iconY = 160;
-
-    @RangeConstraint(min = 0, max = 30)
-    public int textureSize = 20;
-
-    @RangeConstraint(min = 0, max = 30)
-    public int textureSpacing = 20;
-
-    public boolean easeIn = true;
-
-    public boolean opacityRecharge = true;
 
 
 }
