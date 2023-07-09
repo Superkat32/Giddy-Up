@@ -12,8 +12,13 @@ import net.minecraft.entity.passive.HorseEntity;
 import net.superkat.giddyup.particles.DustParticle;
 import org.lwjgl.glfw.GLFW;
 
+import static net.superkat.giddyup.GiddyUpMain.LOGGER;
+//import static net.superkat.giddyup.GiddyUpMain.MY_CHANNEL;
+
 @Environment(EnvType.CLIENT)
 public class GiddyUpClient implements ClientModInitializer {
+
+//    public record DashAcceptedPacket() {}
 
     public static final KeyBinding DASH = KeyBindingHelper.registerKeyBinding(
         new KeyBinding(
@@ -27,15 +32,28 @@ public class GiddyUpClient implements ClientModInitializer {
     public void onInitializeClient() {
 //        GiddyUpConfig.INSTANCE.load();
         ParticleFactoryRegistry.getInstance().register(GiddyUpMain.DUST, DustParticle.Factory::new);
+//        MY_CHANNEL.registerClientbound(GiddyUpMain.MyPacket.class, (message, access) -> {
+//            LOGGER.info("yay1111");
+//        });
+//        MY_CHANNEL.registerServerbound(GiddyUpMain.DashPacket.class, (message, access) -> {
+////            DashHandler.startDash((HorseEntity) access.player().getVehicle());
+//            MY_CHANNEL.serverHandle(access.player()).send(new GiddyUpMain.DashAcceptedPacket());
+//            LOGGER.info("packet");
+//        });
+//        GiddyUpMain.MY_CHANNEL.registerClientbound(GiddyUpMain.DashAcceptedPacket.class, (((message, access) -> {
+//            DashHandler.startDash((HorseEntity) access.player().getVehicle());
+//        })));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(client.getNetworkHandler() != null) {
                 if(DASH.isPressed()) {
-                    GiddyUpMain.LOGGER.info("hotkey pressed");
+//                    MY_CHANNEL.clientHandle().send(new GiddyUpMain.MyPacket(1, "this"));
+                    LOGGER.info("hotkey pressed");
 //                    ClientPlayNetworking.send(GiddyUpMain.KEYBINDING_PACKET_ID, PacketByteBufs.empty());
                     if(client.player.getVehicle() instanceof HorseEntity && DashHandler.canContinue()) {
 //                        DashHandler.test((HorseEntity) client.player.getVehicle());
+                        GiddyUpMain.MY_CHANNEL.clientHandle().send(new GiddyUpMain.DashPacket());
                         tryDash((HorseEntity) client.player.getVehicle());
-                        GiddyUpMain.LOGGER.info("attempting dash");
+                        LOGGER.info("attempting dash");
                     }
                 }
             }
@@ -43,12 +61,10 @@ public class GiddyUpClient implements ClientModInitializer {
     }
 
     private void tryDash(HorseEntity horse) {
-        GiddyUpMain.LOGGER.info("tryDash: 1");
+        LOGGER.info("tryDash: 1");
         if(DashHandler.canContinue() && horse.isTame() && horse.isSaddled()) {
-            DashHandler.startDash(horse);
-            GiddyUpMain.LOGGER.info("tryDash: 2");
-        } else {
-            return;
+            LOGGER.info("tryDash: 2");
+//            DashHandler.startDash(horse);
         }
     }
 }
