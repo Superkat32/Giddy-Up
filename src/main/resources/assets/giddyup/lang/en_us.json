@@ -8,11 +8,30 @@
 
   "text.config.giddyupconfig.title": "Giddy Up Config",
 
-  "text.config.giddyupconfig.section.Buffs": "Buffs (Server)",
-  "text.config.giddyupconfig.option.horseSpeedBuff": "Horse Speed Buff",
-  "text.config.giddyupconfig.option.horseSpeedBuff.tooltip": "Increase horse's speed by 1.25x",
-  "text.config.giddyupconfig.option.horseJumpBuff": "Horse Jump Buff",
-  "text.config.giddyupconfig.option.horseJumpBuff.tooltip": "Increase a horse's jump by 1.15x",
+  "text.config.giddyupconfig.section.Dust Particles": "Dust Particles (Client)",
+  "text.config.giddyupconfig.option.dustParticles": "Dust Particles",
+
+  "text.config.giddyupconfig.section.Dash HUD": "Dash HUD (Client)",
+  "text.config.giddyupconfig.option.openScreenNextTime": "Move HUD Next Time",
+  "text.config.giddyupconfig.option.openScreenNextTime.tooltip": "Open the screen to move the Dash HUD next time you mount a horse",
+  "text.config.giddyupconfig.option.iconX": "Icon x",
+  "text.config.giddyupconfig.option.iconY": "Icon y",
+  "text.config.giddyupconfig.option.textureSize": "Icon Size",
+  "text.config.giddyupconfig.option.textureSpacing": "Icon Spacing",
+  "text.config.giddyupconfig.option.easeIn": "Ease In HUD",
+  "text.config.giddyupconfig.option.easeIn.tooltip": "Should the HUD element ease into place upon riding a horse?",
+  "text.config.giddyupconfig.option.opacityRecharge": "Opacity Recharge",
+  "text.config.giddyupconfig.option.opacityRecharge.tooltip": "Should the opacity of the icon slowly increase when recharging?",
+
+  "text.config.giddyupconfig.section.Cooldowns": "Cooldowns (Server)",
+  "text.config.giddyupconfig.option.dashingTime": "Dashing Time",
+  "text.config.giddyupconfig.option.dashingTime.tooltip": "Ticks a dash lasts",
+  "text.config.giddyupconfig.option.dashCooldownTime": "Dash Cooldown Time",
+  "text.config.giddyupconfig.option.dashCooldownTime.tooltip": "Ticks until another dash can be used. Must be lower than Dashing Time",
+  "text.config.giddyupconfig.option.rechargeTime": "Dash Recharge Time",
+  "text.config.giddyupconfig.option.rechargeTime.tooltip": "Ticks until a dash recharges. Must be lower than Dashing Time",
+  "text.config.giddyupconfig.option.rechargeAllAtOnce": "Recharge All Dashes At Once",
+  "text.config.giddyupconfig.option.rechargeAllAtOnce.tooltip": "Once one dash recharges, the rest recharge too",
 
   "text.config.giddyupconfig.section.Dashes": "Dashes (Server)",
   "text.config.giddyupconfig.category.nestedMaxDashes": "Dashes...",
@@ -30,17 +49,6 @@
   "text.config.giddyupconfig.option.nestedMaxDashes.whiteFieldHorseMarking": "White Field Marking",
   "text.config.giddyupconfig.option.nestedMaxDashes.blackDotsHorseMarking": "Black Dots Marking",
   "text.config.giddyupconfig.option.nestedMaxDashes.whiteDotsHorseMarking": "White Dots Marking",
-  "text.config.giddyupconfig.option.nestedMaxDashes.noneHorseMarking": "No Marking",
+  "text.config.giddyupconfig.option.nestedMaxDashes.noneHorseMarking": "No Marking"
 
-  "text.config.giddyupconfig.section.Dash HUD": "Dash HUD (Client)",
-  "text.config.giddyupconfig.option.openScreenNextTime": "Move HUD Next Time",
-  "text.config.giddyupconfig.option.openScreenNextTime.tooltip": "Open the screen to move the Dash HUD next time you mount a horse",
-  "text.config.giddyupconfig.option.iconX": "Icon x",
-  "text.config.giddyupconfig.option.iconY": "Icon y",
-  "text.config.giddyupconfig.option.textureSize": "Icon Size",
-  "text.config.giddyupconfig.option.textureSpacing": "Icon Spacing",
-  "text.config.giddyupconfig.option.easeIn": "Ease In HUD",
-  "text.config.giddyupconfig.option.easeIn.tooltip": "Should the HUD element ease into place upon riding a horse?",
-  "text.config.giddyupconfig.option.opacityRecharge": "Opacity Recharge",
-  "text.config.giddyupconfig.option.opacityRecharge.tooltip": "Should the opacity of the icon slowly increase when recharging?"
 }
