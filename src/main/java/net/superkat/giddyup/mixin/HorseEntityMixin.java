@@ -42,6 +42,8 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     public int dashesRemaining;
     public boolean canDash = false;
     public boolean dashing = false;
+    public int dashingTime = 35;
+    public int dashCooldownTime = 40;
     public int dashRechargeTime = 115;
     public int dashTicks = 0;
     public int cooldownTicks = 0;
@@ -55,6 +57,15 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
     @Override
     protected void tickControlled(PlayerEntity controllingPlayer, Vec3d movementInput) {
         super.tickControlled(controllingPlayer, movementInput);
+        dashingTime = CONFIG.dashingTime();
+        dashCooldownTime = CONFIG.dashCooldownTime();
+        dashRechargeTime = CONFIG.rechargeTime();
+        if(dashCooldownTime < dashingTime) {
+            dashCooldownTime = dashingTime + 1;
+        }
+        if(dashRechargeTime < dashingTime) {
+            dashRechargeTime = dashingTime + 1;
+        }
         ticksRidden++;
         if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             updateDashHandler(false);
@@ -83,9 +94,9 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
             if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
                 DashHandler.updateDashHud(maxDashes, dashesRemaining);
             }
-            cooldownTicks = 50;
+            cooldownTicks = dashCooldownTime;
             rechargeTicks = dashRechargeTime;
-            dashTicks = 35;
+            dashTicks = dashingTime;
             removeDashBoost();
             addDashBoost();
 //            this.playSound(this.getAngrySound(), this.getSoundVolume(), this.getSoundPitch());
@@ -207,7 +218,11 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
                 if(dashesRemaining == maxDashes) {
                     return;
                 }
-                dashesRemaining++;
+                if(CONFIG.rechargeAllAtOnce())  {
+                    dashesRemaining = maxDashes;
+                } else {
+                    dashesRemaining++;
+                }
                 rechargeTicks = 115;
                 if(this.getControllingPassenger() !=  null && FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
                     DashHandler.updateDashHud(maxDashes, dashesRemaining);

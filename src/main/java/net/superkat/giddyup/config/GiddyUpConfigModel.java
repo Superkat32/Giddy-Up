@@ -31,6 +31,23 @@ public class GiddyUpConfigModel {
 
     public boolean opacityRecharge = true;
 
+    @SectionHeader("Cooldowns")
+
+    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
+    @RangeConstraint(min = 1, max = 200)
+    public int dashingTime = 35;
+
+    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
+    @RangeConstraint(min = 1, max = 200)
+    public int dashCooldownTime = 40;
+
+    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
+    @RangeConstraint(min = 1, max = 200)
+    public int rechargeTime = 115;
+
+    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
+    public boolean rechargeAllAtOnce = false;
+
     @SectionHeader("Dashes")
 
     @Nest
