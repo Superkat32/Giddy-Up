@@ -32,17 +32,6 @@ public class GiddyUpClient implements ClientModInitializer {
     public void onInitializeClient() {
 //        GiddyUpConfig.INSTANCE.load();
         ParticleFactoryRegistry.getInstance().register(GiddyUpMain.DUST, DustParticle.Factory::new);
-//        MY_CHANNEL.registerClientbound(GiddyUpMain.MyPacket.class, (message, access) -> {
-//            LOGGER.info("yay1111");
-//        });
-//        MY_CHANNEL.registerServerbound(GiddyUpMain.DashPacket.class, (message, access) -> {
-////            DashHandler.startDash((HorseEntity) access.player().getVehicle());
-//            MY_CHANNEL.serverHandle(access.player()).send(new GiddyUpMain.DashAcceptedPacket());
-//            LOGGER.info("packet");
-//        });
-//        GiddyUpMain.MY_CHANNEL.registerClientbound(GiddyUpMain.DashAcceptedPacket.class, (((message, access) -> {
-//            DashHandler.startDash((HorseEntity) access.player().getVehicle());
-//        })));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(client.getNetworkHandler() != null) {
                 if(DASH.isPressed()) {

@@ -26,18 +26,6 @@ public class GiddyUpMain implements ModInitializer {
 	public void onInitialize() {
 //		LOGGER.info("Hello Fabric world!");
 		Registry.register(Registries.PARTICLE_TYPE, new Identifier(MOD_ID, "dust"), DUST);
-//		MY_CHANNEL.registerServerbound(MyPacket.class, ((message, access) -> {
-//
-//		}));
-//		MY_CHANNEL.registerServerbound(MyPacket.class, ((message, access) -> {
-//			MY_CHANNEL.serverHandle(access.player()).send(new MyPacket(1, "test"));
-//		}));
-
-//		MY_CHANNEL.registerClientbound(DashAcceptedPacket.class, (((message, access) -> {
-////			MY_CHANNEL.serverHandle(access.player()).send(new DashAcceptedPacket());
-////			MY_CHANNEL.clientHandle().send(new DashPacket());
-//			DashHandler.startDash((HorseEntity) access.player().getVehicle());
-//		})));
 		MY_CHANNEL.registerServerbound(DashPacket.class, (((message, access) -> {
             MY_CHANNEL.serverHandle(access.player()).send(new DashAcceptedPacket());
             LOGGER.info("packet");

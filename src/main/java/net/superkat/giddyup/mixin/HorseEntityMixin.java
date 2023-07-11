@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.UUID;
 
+import static net.superkat.giddyup.GiddyUpMain.CONFIG;
 import static net.superkat.giddyup.GiddyUpMain.LOGGER;
 
 @Mixin(value = HorseEntity.class, priority = 490)
@@ -236,7 +237,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         double distanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
         double speedSquared = 0.35 * 0.35;
 
-        if (distanceSquared >= speedSquared) {
+        if (distanceSquared >= speedSquared && CONFIG.dustParticles()) {
 //            LOGGER.info("yay");
             if(this.isOnGround()) {
 //                LOGGER.info("yay2");

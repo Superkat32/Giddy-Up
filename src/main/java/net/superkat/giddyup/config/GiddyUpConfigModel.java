@@ -7,6 +7,10 @@ import net.superkat.giddyup.GiddyUpMain;
 @Modmenu(modId = GiddyUpMain.MOD_ID)
 @Config(name = "giddyupconfig", wrapperName = "GiddyUpConfig")
 public class GiddyUpConfigModel {
+    @SectionHeader("Dust Particles")
+
+    public boolean dustParticles = true;
+
     @SectionHeader("Dash HUD")
 
     public boolean openScreenNextTime = false;
@@ -30,6 +34,7 @@ public class GiddyUpConfigModel {
     @SectionHeader("Dashes")
 
     @Nest
+    @Expanded
     public NestedMaxDashes nestedMaxDashes = new NestedMaxDashes();
 
     public static class NestedMaxDashes {
@@ -86,8 +91,4 @@ public class GiddyUpConfigModel {
         @RangeConstraint(min = 0, max = 5)
         public int noneHorseMarking = 1;
     }
-
-
-
-
 }
