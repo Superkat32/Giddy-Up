@@ -10,6 +10,8 @@
 
   "text.config.giddyupconfig.section.Dust Particles": "Dust Particles (Client)",
   "text.config.giddyupconfig.option.dustParticles": "Dust Particles",
+  "text.config.giddyupconfig.option.moreDustWhenDashing": "Dashing Dust Particles",
+  "text.config.giddyupconfig.option.moreDustWhenDashing.tooltip": "If enabled, this feature will show bigger dust when dashing(only affects you)",
 
   "text.config.giddyupconfig.section.Dash HUD": "Dash HUD (Client)",
   "text.config.giddyupconfig.option.openScreenNextTime": "Move HUD Next Time",

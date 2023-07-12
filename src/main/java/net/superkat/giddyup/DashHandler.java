@@ -56,7 +56,6 @@ public class DashHandler {
     //Called by HorseEntityMixin
     @Environment(EnvType.CLIENT)
     public static void renderHUD() {
-        //FIXME - Something here causes server to crash
         if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             DashRenderer.shouldRender = true;
             if(currentRechargeTicks == 1) {
@@ -105,7 +104,6 @@ public class DashHandler {
         int returnValue = 0;
 //        LOGGER.info("maxDashes1");
         if(color == HorseColor.WHITE) {
-//            returnValue = whiteHorseMaxDash = GiddyUpMain.
             returnValue = whiteHorseMaxDash = CONFIG.nestedMaxDashes.whiteHorseMaxDash();
         } else if (color == HorseColor.CREAMY) {
             returnValue = creamyHorseMaxDash = CONFIG.nestedMaxDashes.creamyHorseMaxDash();

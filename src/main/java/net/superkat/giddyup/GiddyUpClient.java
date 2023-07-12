@@ -13,13 +13,9 @@ import net.superkat.giddyup.particles.DustParticle;
 import org.lwjgl.glfw.GLFW;
 
 import static net.superkat.giddyup.GiddyUpMain.LOGGER;
-//import static net.superkat.giddyup.GiddyUpMain.MY_CHANNEL;
 
 @Environment(EnvType.CLIENT)
 public class GiddyUpClient implements ClientModInitializer {
-
-//    public record DashAcceptedPacket() {}
-
     public static final KeyBinding DASH = KeyBindingHelper.registerKeyBinding(
         new KeyBinding(
                 "giddyup.key.dash",
@@ -30,16 +26,12 @@ public class GiddyUpClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-//        GiddyUpConfig.INSTANCE.load();
         ParticleFactoryRegistry.getInstance().register(GiddyUpMain.DUST, DustParticle.Factory::new);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(client.getNetworkHandler() != null) {
                 if(DASH.isPressed()) {
-//                    MY_CHANNEL.clientHandle().send(new GiddyUpMain.MyPacket(1, "this"));
                     LOGGER.info("hotkey pressed");
-//                    ClientPlayNetworking.send(GiddyUpMain.KEYBINDING_PACKET_ID, PacketByteBufs.empty());
                     if(client.player.getVehicle() instanceof HorseEntity && DashHandler.canContinue()) {
-//                        DashHandler.test((HorseEntity) client.player.getVehicle());
                         GiddyUpMain.MY_CHANNEL.clientHandle().send(new GiddyUpMain.DashPacket());
                         tryDash((HorseEntity) client.player.getVehicle());
                         LOGGER.info("attempting dash");
@@ -53,7 +45,6 @@ public class GiddyUpClient implements ClientModInitializer {
         LOGGER.info("tryDash: 1");
         if(DashHandler.canContinue() && horse.isTame() && horse.isSaddled()) {
             LOGGER.info("tryDash: 2");
-//            DashHandler.startDash(horse);
         }
     }
 }

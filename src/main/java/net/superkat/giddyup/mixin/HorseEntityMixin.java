@@ -34,7 +34,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
 
     @Shadow protected abstract SoundEvent getAngrySound();
 
-    //Literally just the soul speed's id, except wit the last number replaced
+    //Literally just the soul speed's id, except with the last number replaced
     private static final UUID HORSE_DASH_ID = UUID.fromString("87f46a96-686f-4796-b035-22e16ee9e039");
     public int ticksRidden = 0;
     public boolean continueNoRiderActions = false;
@@ -90,7 +90,6 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
             DashHandler.canDash = false;
             this.dashing = true;
             dashesRemaining--;
-//            DashRenderer.setDashing(true);
             if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
                 DashHandler.updateDashHud(maxDashes, dashesRemaining);
             }
@@ -99,17 +98,6 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
             dashTicks = dashingTime;
             removeDashBoost();
             addDashBoost();
-//            this.playSound(this.getAngrySound(), this.getSoundVolume(), this.getSoundPitch());
-//            this.playAngrySound();
-//            this.getWorld().playSound(this.getX(), this.getY(), this.getZ(), this.getAngrySound(), this.getSoundCategory(), this.getSoundVolume(), 1, true);
-//            this.getWorld().playSoundFromEntity(null, getSelf(), this.getAngrySound(), this.getSoundCategory(), 5.0f, this.getSoundPitch());
-//            Objects.requireNonNull(Objects.requireNonNull(this.getServer()).getWorld(this.getWorld().getRegistryKey() == World.NETHER ? World.OVERWORLD : World.NETHER)).playSoundFromEntity(null, this, this.getAngrySound(), this.getSoundCategory(), 2.0f, 1.0f);
-//            getSelf().playAngrySound();
-//            this.getControllingPassenger().playSound(this.getAngrySound(), this.getSoundVolume(), this.getSoundPitch());
-//            if(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
-//                this.getWorld().playSoundFromEntity(null, this, this.getAngrySound(), this.getSoundCategory(), 2.0f, 1.0f);
-//            } else {
-//            }
         }
     }
 
@@ -131,28 +119,6 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         }
     }
 
-//    public void updateDashHud() {
-
-//        DashRenderer.maxDashes = maxDashes;
-//        DashRenderer.dashesRemaining = dashesRemaining;
-//
-//        DashRenderer.isDashFiveReady = dashesRemaining >= 5;
-//        DashRenderer.isDashFourReady = dashesRemaining >= 4;
-//        DashRenderer.isDashThreeReady = dashesRemaining >= 3;
-//        DashRenderer.isDashTwoReady = dashesRemaining >= 2;
-//        DashRenderer.isDashOneReady = dashesRemaining >= 1;
-//
-//        if (dashesRemaining < 0 || dashesRemaining > 5) {
-//            LOGGER.warn("DASHES REMAINING UNKNOWN: " + dashesRemaining);
-//            DashRenderer.isDashFiveReady = false;
-//            DashRenderer.isDashFourReady = false;
-//            DashRenderer.isDashThreeReady = false;
-//            DashRenderer.isDashTwoReady = false;
-//            DashRenderer.isDashOneReady = false;
-//        }
-//    }
-
-    //Remove later
     public void addDashBoost() {
         EntityAttributeInstance speed = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
         if(speed == null) {
@@ -162,7 +128,6 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
         speed.addTemporaryModifier(new EntityAttributeModifier(HORSE_DASH_ID, "Horse dash speed boost", 0.15, EntityAttributeModifier.Operation.ADDITION));
     }
 
-    //Remove later
     public void removeDashBoost() {
         EntityAttributeInstance speed = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
         if(speed != null) {
@@ -238,9 +203,6 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
             if(dashTicks == 0) {
                 removeDashBoost();
                 dashing = false;
-//                if(this.getControllingPassenger() != null) {
-//                    DashRenderer.setDashing(false);
-//                }
             }
         }
 
@@ -270,23 +232,5 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
                 }
             }
         }
-//        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat(), 40, 0.0);
-//        double velX = Math.abs(this.getVelocity().getX());
-//        double velZ = Math.abs(this.getVelocity().getZ());
-//        if(velX > 0.15 || velZ > 0.15) {
-//            if(this.isOnGround() && ticksRidden % 2 == 0) {
-//                int amount = this.random.nextBetween(1, 4);
-//                for(int smokeAmount = amount; smokeAmount >= 1; smokeAmount--) {
-//                    //The particle's "velocity" isn't actually the velocity, it is used to determine other numbers
-//                    //The velX number is used to determine the dust particle's scale
-//                    //The velY number is used to determine the dust particle's age, which in turn is used to determine how quickly the particle should shrink
-//                    if(dashing) {
-//                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat() * 2, 80, 0.0);
-//                    } else {
-//                        this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat(), 40, 0.0);
-//                    }
-//                }
-//            }
-//        }
     }
 }

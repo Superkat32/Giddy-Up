@@ -18,17 +18,15 @@ public class GiddyUpMain implements ModInitializer {
 	public static final DefaultParticleType DUST = FabricParticleTypes.simple();
 	public static final GiddyUpConfig CONFIG = GiddyUpConfig.createAndLoad();
 	public static final OwoNetChannel MY_CHANNEL = OwoNetChannel.createOptional(new Identifier(MOD_ID, "main"));
-//	public record MyPacket(int someData, String otherData) {}
 	public record DashPacket() {}
 	public record DashAcceptedPacket() {}
 
 	@Override
 	public void onInitialize() {
-//		LOGGER.info("Hello Fabric world!");
 		Registry.register(Registries.PARTICLE_TYPE, new Identifier(MOD_ID, "dust"), DUST);
 		MY_CHANNEL.registerServerbound(DashPacket.class, (((message, access) -> {
             MY_CHANNEL.serverHandle(access.player()).send(new DashAcceptedPacket());
-            LOGGER.info("packet");
+//            LOGGER.info("packet");
         })));
 		MY_CHANNEL.registerClientbound(DashAcceptedPacket.class, (((message, access) -> {
 			DashHandler.startDash((HorseEntity) access.player().getVehicle());
