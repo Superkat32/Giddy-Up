@@ -262,7 +262,7 @@ public abstract class HorseEntityMixin extends AbstractHorseEntity implements Va
                     //The velX number is used to determine the dust particle's scale
                     //The velY number is used to determine the dust particle's age,
                     //which in turn is used to determine how quickly the particle should shrink
-                    if(dashing) {
+                    if(dashing && CONFIG.moreDustWhenDashing()) {
                         this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat() * 2, 80, 0.0);
                     } else {
                         this.getWorld().addParticle(GiddyUpMain.DUST, this.getX() + this.getRotationVector().multiply(this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1), 0, 0).getX() + this.getRotationVector().multiply(-1.25, 0, 0).getX(), this.getY() + this.random.nextFloat() / 10, this.getZ() + this.getRotationVector().multiply(0, 0, this.random.nextFloat() * (this.random.nextBoolean() ? 1 : -1)).getZ() + this.getRotationVector().multiply(0, 0, -1.25).getZ(), this.random.nextFloat(), 40, 0.0);

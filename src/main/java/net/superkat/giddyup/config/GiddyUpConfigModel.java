@@ -10,6 +10,7 @@ public class GiddyUpConfigModel {
     @SectionHeader("Dust Particles")
 
     public boolean dustParticles = true;
+    public boolean moreDustWhenDashing = true;
 
     @SectionHeader("Dash HUD")
 

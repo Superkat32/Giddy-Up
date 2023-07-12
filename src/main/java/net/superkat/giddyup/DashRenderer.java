@@ -82,6 +82,11 @@ public class DashRenderer {
                         context.drawTexture(dash_ready, x, y, 0.0f, 0.0f, textureSize, textureSize, textureSize, textureSize);
                     }
 //                    LOGGER.info(String.valueOf(i));
+                } else if (CONFIG.rechargeAllAtOnce()) {
+                    if(CONFIG.opacityRecharge()) {
+                        context.setShaderColor(1f, 1f, 1f, iconAlpha);
+                        context.drawTexture(dash_ready, x, y, 0.0f, 0.0f, textureSize, textureSize, textureSize, textureSize);
+                    }
                 }
 
                 RenderSystem.depthMask(true);
